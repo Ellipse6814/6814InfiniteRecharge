@@ -7,11 +7,12 @@
 
 package frc.robot;
 
+import frc.robot.subsystems.*;
+import frc.robot.commands.*;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -23,10 +24,15 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final static ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-  private final static Drive drive = Drive.getInstance();
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(exampleSubsystem);
+  private Compressor compressor = new Compressor();
+  private Table tableSpinner = Table.getInstance();
+  private Drive drive = Drive.getInstance();
+
+  private Joystick driverJoy = new Joystick(0);
+  private Joystick operatorJoy = new Joystick(1);
+
+  private Command autoCommand = null;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -34,6 +40,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    System.out.println("Robot: Inited");
   }
 
   /**
@@ -43,6 +51,7 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    drive.setDefaultCommand(new DriveTeleOp(() -> driverJoy.getRawAxis(1), () -> driverJoy.getRawAxis(4)));
   }
 
   /**
@@ -51,7 +60,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    autoCommand = new DriveAutoTime(3, 0.5);
+    return autoCommand;
   }
 }

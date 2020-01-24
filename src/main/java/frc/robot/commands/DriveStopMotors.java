@@ -13,7 +13,8 @@ public class DriveStopMotors extends CommandBase {
 
     @Override
     public void initialize() {
-        drive.tankDrive(0, 0);
+        System.out.println("Starting CMD: DriveStopMotors");
+        drive.stopMotors();
     }
 
     @Override

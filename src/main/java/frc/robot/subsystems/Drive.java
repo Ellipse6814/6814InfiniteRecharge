@@ -12,7 +12,7 @@ public class Drive extends SubsystemBase {
     public static Drive getInstance() {
         if (instance == null)
             instance = new Drive();
-            
+
         return instance;
     }
 
@@ -34,11 +34,16 @@ public class Drive extends SubsystemBase {
         leftMaster.setInverted(false);
         rightMaster.setInverted(true);
 
+        System.out.println("Drive: Inited");
     }
 
     public void tankDrive(double leftSpd, double rightSpd) {
         leftMaster.set(leftSpd);
         rightMaster.set(rightSpd);
+    }
+
+    public void stopMotors() {
+        tankDrive(0, 0);
     }
 
     @Override
