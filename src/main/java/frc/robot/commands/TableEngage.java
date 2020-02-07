@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
-import frc.robot.subsystems.Table;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Table;
 
 public class TableEngage extends CommandBase {
   private final Table tableSpinner = Table.getInstance();

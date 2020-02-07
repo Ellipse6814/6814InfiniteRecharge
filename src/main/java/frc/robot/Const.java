@@ -17,7 +17,7 @@ public class Const {
     public static final double kIn2M = 0.0254;
     public static final double kM2In = 1 / 0.0254;
 
-    // robot
+    // _robot
     public static final Color kBlue = ColorMatch.makeColor(0.143, 0.427, 0.429); // Color(0.12, 0.42, 0.44);
     public static final Color kGreen = ColorMatch.makeColor(0.197, 0.561, 0.240); // Color(0.18, 0.59, 0.23);
     public static final Color kRed = ColorMatch.makeColor(0.561, 0.232, 0.114); // Color(0.5, 0.34, 0.15);
@@ -34,7 +34,40 @@ public class Const {
     public static final double kTableSliceDeg = 45.0;
     public static final double kTableSliceRollerDeg = kTableSliceDeg * kTableRot2RollerRot;
 
+    // _drive
+    public static final int kDriveLeftMotorPort = 1;
+    public static final int kDriveLeftMotorPort1 = 2;
+    public static final int kDriveLeftMotorPort2 = 3;
+    public static final int kDriveRightMotorPort = 4;
+    public static final int kDriveRightMotorPort1 = 5;
+    public static final int kDriveRightMotorPort2 = 6;
+
+    public static final boolean kLeftDriveInverted = false;
+    public static final boolean kRightDriveInverted = true;
+
+    // _table
+    public static final int kTableSolonoidPort1 = -0;
+    public static final int kTableSolonoidPort2 = -1;
+    public static final int kTableMotorPort = -1;
+
+    // _elevator
+    public static final int kElevatorSolonoidPort1 = -2;
+    public static final int kElevatorSolonoidPort2 = -3;
+    public static final int kElevatorMotorPort = -2;
+
+    // _intake
+    public static final int kIntakeRollerMotorPort = -1;
+    public static final int kIntakeAngleMotorPort = -1;
+
+    // _LED
+    public static final int kLEDPort = -1;
+
+    
     public static void main(String[] args) {
-        System.out.println(kRollerRot2TableRot);
+        test();
+    }
+
+    public static void test() {
+        // System.out.println(kRollerRot2TableRot);
     }
 }

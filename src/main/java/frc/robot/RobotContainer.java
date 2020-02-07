@@ -7,13 +7,16 @@
 
 package frc.robot;
 
-import frc.robot.subsystems.*;
-import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.DriveAutoTime;
+import frc.robot.commands.DriveTeleOp;
+import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Logger;
+import frc.robot.subsystems.Table;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -23,15 +26,23 @@ import edu.wpi.first.wpilibj2.command.Command;
  * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
 
+  private Logger logger = Logger.getInstance();
+
+  private void log(Object msg) {
+    logger.log("RobotContainer", msg);
+  }
+
+  // Subsystems
   private Compressor compressor = new Compressor();
-  private Table tableSpinner = Table.getInstance();
+  private Table table = Table.getInstance();
   private Drive drive = Drive.getInstance();
 
+  // Operator Interfaces
   private Joystick driverJoy = new Joystick(0);
   private Joystick operatorJoy = new Joystick(1);
 
+  // Auto Commands
   private Command autoCommand = null;
 
   /**
@@ -41,7 +52,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    System.out.println("Robot: Inited");
+    log("Inited");
   }
 
   /**
@@ -62,5 +73,9 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     autoCommand = new DriveAutoTime(3, 0.5);
     return autoCommand;
+  }
+
+  public void debug() {
+    // TODO: add subsystems
   }
 }

@@ -9,21 +9,20 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
-import frc.robot.subsystems.TableColorDetector.TableColor;
 
-public class Table extends SubsystemBase {
+public class Elevator extends SubsystemBase {
 
     private Logger logger = Logger.getInstance();
 
     private void log(Object msg) {
-        logger.log("Table", msg);
+        logger.log("Elevator", msg);
     }
 
-    private static Table instance;
+    private static Elevator instance;
 
-    public static Table getInstance() {
+    public static Elevator getInstance() {
         if (instance == null)
-            instance = new Table();
+            instance = new Elevator();
         return instance;
     }
 
@@ -31,7 +30,6 @@ public class Table extends SubsystemBase {
 
     private final int pidIdx = 0;
     public final TalonSRX motor = new TalonSRX(Const.kTableMotorPort);
-    private final TableColorDetector tableColorDetector = TableColorDetector.getInstance();
 
     public static void main(String[] args) {
         // System.out.println((int) (0.75 * Const.kTableRot2RollerRot *
@@ -39,9 +37,9 @@ public class Table extends SubsystemBase {
         // System.out.println(506 * Const.kDeg2Rot * Const.kRot2TalonRaw);
     }
 
-    private Table() {
+    private Elevator() {
         // TODO: put consts in @Link{Const.java}
-        piston = new DoubleSolenoid(Const.kTableSolonoidPort1, Const.kTableSolonoidPort2);
+        piston = new DoubleSolenoid(Const.kElevatorSolonoidPort1, Const.kElevatorSolonoidPort2);
         motor.configFactoryDefault(Const.kTimeout);
         motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
         motor.setSelectedSensorPosition(0);
@@ -57,18 +55,6 @@ public class Table extends SubsystemBase {
         motor.configMotionAcceleration(2000);
 
         log("Init");
-    }
-
-    public boolean getDeltaEdge() {
-        return tableColorDetector.hasNewState();
-    }
-
-    public TableColor peekColor() {
-        return tableColorDetector.getTableColor();
-    }
-
-    public void initColorSensor(int direction) {
-        tableColorDetector.init(direction);
     }
 
     public void resetEncoder(double resetToDeg) {

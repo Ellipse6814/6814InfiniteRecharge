@@ -3,12 +3,18 @@ package frc.robot.subsystems;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
+
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.Const;
 
 public class TableColorDetector {
+    private Logger logger = Logger.getInstance();
+
+    private void log(Object msg) {
+        logger.log("TableColorDetector", msg);
+    }
 
     private static TableColorDetector instance;
 
@@ -30,21 +36,22 @@ public class TableColorDetector {
     private final ColorMatch m_colorMatcher = new ColorMatch();
 
     public static void main(String[] args) {
-        TableColor a = TableColor.Blue;
-        TableColor b = TableColor.Blue;
-        System.out.println(a == TableColor.Blue);
-        System.out.println(a == b);
+        // TableColor a = TableColor.Blue;
+        // TableColor b = TableColor.Blue;
+        // System.out.println(a == TableColor.Blue);
+        // System.out.println(a == b);
     }
 
-    public TableColorDetector() {
+    private TableColorDetector() {
         m_colorMatcher.addColorMatch(Const.kBlue);
         m_colorMatcher.addColorMatch(Const.kRed);
         m_colorMatcher.addColorMatch(Const.kGreen);
         m_colorMatcher.addColorMatch(Const.kYellow);
 
-        System.out.println("TableColorDetector: Inited");
+        log("TableColorDetector: Inited");
     }
 
+    @Deprecated
     public double[] getRawColor() {
         Color detectedColor = sensor.getColor();
         return new double[] { detectedColor.blue, detectedColor.green, detectedColor.blue };
@@ -78,7 +85,7 @@ public class TableColorDetector {
         return res;
     }
 
-    public boolean updateState() {
+    public boolean hasNewState() {
         TableColor newState = getTableColor();
         // nothing to update
         if (state == newState) {
@@ -87,17 +94,17 @@ public class TableColorDetector {
 
         // let's check if it's the expected state
         if (newState == expectedState) {
-            System.out.println("INFO: Updated color from [" + state + "] to [" + newState + "]");
+            log("INFO: Updated color from [" + state + "] to [" + newState + "]");
             state = newState;
             updateExpectedState();
             return true;
         } else if (expectedState == TableColor.Other) {
-            System.out.println("INFO: Updated color from [" + state + "] to [" + newState + "]");
+            log("INFO: Updated color from [" + state + "] to [" + newState + "]");
             state = newState;
             updateExpectedState();
             return false;
         } else {
-            System.out.println("WARNING: Skipped color from [" + state + "] to [" + newState + "]");
+            log("WARNING: Skipped color from [" + state + "] to [" + newState + "]");
             return false;
         }
 
@@ -137,7 +144,7 @@ public class TableColorDetector {
 
     public void debug() {
         SmartDashboard.putString("Table Color", getTableColor() + "");
-        // System.out.println(getTableColor());
+        // log(getTableColor());
         SmartDashboard.putString("Raw Color", printDoubleArr(getRawColor()));
         SmartDashboard.putString("State", state + "");
         SmartDashboard.putString("expectedState", expectedState + "");

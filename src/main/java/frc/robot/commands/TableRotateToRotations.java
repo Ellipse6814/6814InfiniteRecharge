@@ -1,10 +1,8 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Const;
 import frc.robot.subsystems.Table;
-import frc.robot.subsystems.TableColorDetector.TableColor;
 
 public class TableRotateToRotations extends CommandBase {
 
@@ -37,7 +35,7 @@ public class TableRotateToRotations extends CommandBase {
         degToSpinTable = displacement * 45 + 15 * direction; // spin to middle after arrived at color
         degToSpinRoller = degToSpinTable * Const.kTableRot2RollerRot;
 
-        tableSpinner.resetInitColorSensor(direction);
+        tableSpinner.initColorSensor(direction);
         tableSpinner.resetEncoder(0);
 
         System.out.println("TableRotateToRotations: rotating " + degToSpinRoller + "deg");

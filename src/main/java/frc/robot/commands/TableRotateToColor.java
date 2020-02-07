@@ -37,7 +37,7 @@ public class TableRotateToColor extends CommandBase {
             return;
         }
 
-        TableColor currentColor = tableSpinner.peekCurrentColor();
+        TableColor currentColor = tableSpinner.peekColor();
 
         if (wantedColor == currentColor) {
             isFinished = true;
@@ -56,7 +56,7 @@ public class TableRotateToColor extends CommandBase {
         double degToSpinTable = displacement * 45 + 15 * direction; // spin to middle after arrived at color
         degToSpinRoller = degToSpinTable * Const.kTableRot2RollerRot;
 
-        tableSpinner.resetInitColorSensor(direction);
+        tableSpinner.initColorSensor(direction);
         tableSpinner.resetEncoder(0);
 
         System.out.println("TableRotateToColor: rotating " + degToSpinRoller + "deg");
