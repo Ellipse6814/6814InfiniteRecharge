@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
 
@@ -19,7 +20,10 @@ public class LED extends SubsystemBase {
   private SpeedController led = new Spark(Const.kLEDPort);
   public LEDState state;
 
+  private double phaseShift;
+
   private LED() {
+    phaseShift = Timer.getFPGATimestamp();
     set(LEDState.Disconnected);
   }
 
@@ -37,10 +41,12 @@ public class LED extends SubsystemBase {
     LEDColor wantedColor = LEDColor.Off;
 
     // if (state == LEDState.Disconnected)
-    // wantedColor = (Timer.getFPGATimestamp() % 1 > 0.5) ? LEDColor.Off :
+    // wantedColor = ((Timer.getFPGATimestamp()-phaseShift) % 1 > 0.5) ?
+    // LEDColor.Off :
     // LEDColor.Yellow;
     // else if (state == LEDState.Normal)
-    // wantedColor = (Timer.getFPGATimestamp() % 1 > 0.5) ? LEDColor.Off :
+    // wantedColor = ((Timer.getFPGATimestamp()-phaseShift) % 1 > 0.5) ?
+    // LEDColor.Off :
     // LEDColor.Green;
     // else if (state == LEDState.PrepOut)
     // wantedColor = LEDColor.Yellow;
@@ -49,7 +55,8 @@ public class LED extends SubsystemBase {
     // else if (state == LEDState.Danger)
     // wantedColor = LEDColor.Red;
     // else if (state == LEDState.WaitingReset)
-    // wantedColor = (Timer.getFPGATimestamp() % 1 > 0.5) ? LEDColor.Off :
+    // wantedColor = ((Timer.getFPGATimestamp()-phaseShift) % 1 > 0.5) ?
+    // LEDColor.Off :
     // LEDColor.Red;
 
     led.set(calcLEDSpd(wantedColor));
