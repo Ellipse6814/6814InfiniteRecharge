@@ -40,15 +40,15 @@ public class Elevator extends SubsystemBase {
     private Elevator() {
         // TODO: put consts in @Link{Const.java}
         piston = new DoubleSolenoid(Const.kElevatorSolonoidPort1, Const.kElevatorSolonoidPort2);
-        motor.configFactoryDefault(Const.kTimeout);
+        motor.configFactoryDefault(Const.kCANTimeout);
         motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
         motor.setSelectedSensorPosition(0);
         motor.setSensorPhase(true);
         motor.selectProfileSlot(pidIdx, pidIdx);
-        motor.config_kF(pidIdx, 0., Const.kTimeout);
-        motor.config_kP(pidIdx, 0.25, Const.kTimeout);
-        motor.config_kI(pidIdx, 0.01, Const.kTimeout);
-        motor.config_kD(pidIdx, 0.0, Const.kTimeout);
+        motor.config_kF(pidIdx, 0., Const.kCANTimeout);
+        motor.config_kP(pidIdx, 0.25, Const.kCANTimeout);
+        motor.config_kI(pidIdx, 0.01, Const.kCANTimeout);
+        motor.config_kD(pidIdx, 0.0, Const.kCANTimeout);
         motor.config_IntegralZone(pidIdx, 500);
         motor.configMotionCruiseVelocity(
                 (int) (0.75 * Const.kTableRot2RollerRot * Const.kSec2Talon100Ms * Const.kRot2TalonRaw));

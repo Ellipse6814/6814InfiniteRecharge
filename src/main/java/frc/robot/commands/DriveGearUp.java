@@ -4,23 +4,22 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Logger;
 
-public class DriveStopMotors extends CommandBase {
+public class DriveGearUp extends CommandBase {
     private Logger logger = Logger.getInstance();
 
     private void log(Object msg) {
-        logger.log("DriveStopMotors", msg);
+        logger.log("DriveGearUp", msg);
     }
 
     private Drive drive = Drive.getInstance();
 
-    public DriveStopMotors() {
-        addRequirements(drive);
+    public DriveGearUp() {
     }
 
     @Override
     public void initialize() {
         log("Starting");
-        drive.stopMotors();
+        drive.gearUp();
     }
 
     @Override

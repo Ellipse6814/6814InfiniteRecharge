@@ -30,6 +30,8 @@ public class Drive extends SubsystemBase {
     private CANSparkMax rightSlave1 = new CANSparkMax(Const.kDriveRightMotorPort1, MotorType.kBrushless);
     private CANSparkMax rightSlave2 = new CANSparkMax(Const.kDriveRightMotorPort2, MotorType.kBrushless);
 
+    private int gear;
+
     private Drive() {
         leftSlave1.follow(leftMaster);
         leftSlave2.follow(leftMaster);
@@ -49,6 +51,20 @@ public class Drive extends SubsystemBase {
 
     public void stopMotors() {
         tankDrive(0, 0);
+    }
+
+    public void gearUp() {
+        gear = Math.min(gear + 1, Const.kDrivePowerGears.length - 1);
+        log("Gear up to [" + gear + "]");
+    }
+
+    public void gearDown() {
+        gear = Math.min(gear - 1, 0);
+        log("Gear down to [" + gear + "]");
+    }
+
+    public int getGear() {
+        return gear;
     }
 
     @Override

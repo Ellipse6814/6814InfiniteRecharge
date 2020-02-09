@@ -29,7 +29,7 @@ public class Const {
             / (Math.PI * kTableRollerDiameter);
     public static final double kRollerRot2TableRot = 1 / kTableRot2RollerRot;
 
-    public static final int kTimeout = 30;
+    public static final int kCANTimeout = 30;
 
     public static final double kTableSliceDeg = 45.0;
     public static final double kTableSliceRollerDeg = kTableSliceDeg * kTableRot2RollerRot;
@@ -44,6 +44,13 @@ public class Const {
 
     public static final boolean kLeftDriveInverted = false;
     public static final boolean kRightDriveInverted = true;
+
+    public static final double kDriveJoystickDeadband = 0.05;
+
+    public static final double[] kDrivePowerGears = { 0.3333, 0.6666, 1 };
+    public static final double[] kDriveTurnGears = { 0.25, 0.25, 0.25 };
+
+    public static final double kDriveDeltaPercentagePerSec = 4; // 1 == 100%
 
     // _table
     public static final int kTableSolonoidPort1 = -0;
@@ -62,7 +69,6 @@ public class Const {
     // _LED
     public static final int kLEDPort = -1;
 
-    
     public static void main(String[] args) {
         test();
     }
