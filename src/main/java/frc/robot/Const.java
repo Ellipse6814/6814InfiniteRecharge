@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.revrobotics.ColorMatch;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.util.Color;
 
 public class Const {
@@ -57,6 +58,8 @@ public class Const {
     public static final int kTableSolonoidPort2 = -1;
     public static final int kTableMotorPort = -1;
 
+    public static final double kTableEngageDelaySec = 1;
+
     // _elevator
     public static final int kElevatorSolonoidPort1 = -2;
     public static final int kElevatorSolonoidPort2 = -3;
@@ -65,6 +68,9 @@ public class Const {
     // _intake
     public static final int kIntakeRollerMotorPort = -1;
     public static final int kIntakeAngleMotorPort = -1;
+
+    public static final Value kIntakeEngagePistonPos = Value.kForward;
+    public static final Value kIntakeNOTEngagePistonPos = Value.kReverse;
 
     // _LED
     public static final int kLEDPort = -1;

@@ -3,33 +3,39 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Const;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Logger;
-import frc.robot.subsystems.Table;
 
-public class TableEngage extends CommandBase {
+public class IntakeSetPiston extends CommandBase {
 
   private Logger logger = Logger.getInstance();
 
   private void log(Object msg) {
-    logger.log("TableEngage", msg);
+    logger.log("IntakeSetPiston", msg);
   }
 
-  private final Table tableSpinner = Table.getInstance();
-  private boolean engageRoller;
+  private final Intake intake = Intake.getInstance();
+  private boolean engageIntake;
 
   private boolean isFinished;
   private double startTime;
 
-  public TableEngage(boolean engageRoller) {
-    this.engageRoller = engageRoller;
+  public IntakeSetPiston(boolean engageIntake) {
+    this.engageIntake = engageIntake;
   }
 
   @Override
   public void initialize() {
     log("Starting");
+    if (intake.getEngaged() == engageIntake) {
+      isFinished = true;
+      log("Engage status [" + engageIntake + "] already satisfied, exiting");
+      return;
+    }
+
     isFinished = false;
     startTime = Timer.getFPGATimestamp();
-    tableSpinner.engageRoller(engageRoller);
+    intake.engageIntake(engageIntake);
   }
 
   @Override

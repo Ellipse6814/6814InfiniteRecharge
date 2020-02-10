@@ -31,8 +31,6 @@ public class Intake extends SubsystemBase {
     public final TalonSRX angleMotor = new TalonSRX(Const.kTableMotorPort);
     public final TalonSRX rollerMotor = new TalonSRX(Const.kTableMotorPort);// TODO: move these to the constructor
 
-    private boolean isDeployed = false; // TODO:
-
     public static void main(String[] args) {
         // System.out.println((int) (0.75 * Const.kTableRot2RollerRot *
         // Const.kSec2Talon100Ms * Const.kRot2TalonRaw));
@@ -86,15 +84,15 @@ public class Intake extends SubsystemBase {
         log("setSetpoint: " + degs + "degs");
     }
 
-    public boolean deployed() {
-        return isDeployed;
+    public boolean getEngaged() {
+        return piston.get().equals(Const.kIntakeEngagePistonPos);
     }
 
-    public void engageRoller(boolean engageRoller) {
-        if (engageRoller) {
-            piston.set(Value.kForward);
+    public void engageIntake(boolean engage) {
+        if (engage) {
+            piston.set(Const.kIntakeEngagePistonPos);
         } else {
-            piston.set(Value.kReverse);
+            piston.set(Const.kIntakeNOTEngagePistonPos);
         }
     }
 
