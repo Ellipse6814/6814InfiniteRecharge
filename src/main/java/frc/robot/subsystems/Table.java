@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -37,6 +38,9 @@ public class Table extends SubsystemBase {
     private double degs;
     private double prevStableEncoderVal;
 
+    private boolean pistonState;
+    private double pistonStateValidAfter;
+
     public static void main(String[] args) {
         // System.out.println((int) (0.75 * Const.kTableRot2RollerRot *
         // Const.kSec2Talon100Ms * Const.kRot2TalonRaw));
@@ -60,6 +64,8 @@ public class Table extends SubsystemBase {
                 (int) (0.75 * Const.kTableRot2RollerRot * Const.kSec2Talon100Ms * Const.kRot2TalonRaw));
         motor.configMotionAcceleration(2000);
 
+        pistonState = piston.get().equals(Const.kIntakeEngagePistonPos);
+        pistonStateValidAfter = Timer.getFPGATimestamp();
         log("Init");
     }
 
@@ -137,6 +143,23 @@ public class Table extends SubsystemBase {
 
     public void stopMotor() {
         motor.set(ControlMode.PercentOutput, 0);
+    }
+
+    public boolean getPiston() {
+        return Timer.getFPGATimestamp() >= pistonStateValidAfter ? pistonState : !pistonState;
+    }
+
+    public void engageTable(boolean engage) {
+        if (engage == pistonState)// not getPiston() which is the current state
+            return; // pistonState is the target state, which is what we want
+
+        if (engage)
+            piston.set(Const.kIntakeEngagePistonPos);
+        else
+            piston.set(Const.kIntakeNOTEngagePistonPos);
+
+        pistonState = engage;
+        pistonStateValidAfter = Timer.getFPGATimestamp() + Const.kIntakePistonMoveDelay;
     }
 
     public void debug() {
