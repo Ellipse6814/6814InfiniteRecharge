@@ -4,6 +4,7 @@ import com.revrobotics.ColorMatch;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.util.Color;
+import frc.robot.*;
 
 public class Const {
 
@@ -17,6 +18,8 @@ public class Const {
 
     public static final double kIn2M = 0.0254;
     public static final double kM2In = 1 / 0.0254;
+
+    public static final double kINF = 1e8;
 
     // _robot
     public static final Color kBlue = ColorMatch.makeColor(0.143, 0.427, 0.429); // Color(0.12, 0.42, 0.44);
@@ -59,6 +62,7 @@ public class Const {
     public static final int kTableMotorPort = -1;
 
     public static final double kTableEngageDelaySec = 1;
+    public static final double kTableDeployDelaySec = 1;
 
     // _elevator
     public static final int kElevatorSolonoidPort1 = -2;
@@ -71,6 +75,14 @@ public class Const {
 
     public static final Value kIntakeEngagePistonPos = Value.kForward;
     public static final Value kIntakeNOTEngagePistonPos = Value.kReverse;
+    public static final double kIntakePistonMoveDelay = 1;
+
+    public static final double kIntakePositionTolerance = 1;
+    public static final double kIntakeVelocityTolerance = 1;
+
+    public static final double kIntakeGroundAngle = 1;
+    public static final double kIntakeHideAngle = 1;
+    public static final double kIntakeShootAngle = 0;
 
     // _LED
     public static final int kLEDPort = -1;

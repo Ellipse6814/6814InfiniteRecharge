@@ -1,21 +1,21 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Const;
 import frc.robot.subsystems.Logger;
 
-public class TableDoTable extends SequentialCommandGroup {
-    public TableDoTable(boolean colorTask) {
+public class IntakeAim extends SequentialCommandGroup {
+    public IntakeAim(boolean colorTask) {
         addCommands(//
-                new TableEngage(true), //
-                colorTask ? new TableRotateToColor() : new TableRotateToRotations(), //
-                new TableEngage(false)//
+                new IntakeSetPiston(true), //
+                new IntakeSetAngle(Const.kIntakeShootAngle)//
         );
     }
 
     private Logger logger = Logger.getInstance();
 
     private void log(Object msg) {
-        logger.log("TableDoTable", msg);
+        logger.log("IntakeGround", msg);
     }
 
     @Override

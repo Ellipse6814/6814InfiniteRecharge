@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
@@ -25,11 +25,15 @@ public class Intake extends SubsystemBase {
         return instance;
     }
 
-    private final DoubleSolenoid piston;
-
-    private final int pidIdx = 0;
+    // private final int pidIdx = 0;
     public final TalonSRX angleMotor = new TalonSRX(Const.kTableMotorPort);
     public final TalonSRX rollerMotor = new TalonSRX(Const.kTableMotorPort);// TODO: move these to the constructor
+    private final DoubleSolenoid piston;
+
+    private boolean pistonState;
+    private double pistonStateValidAfter;
+    private double angleState;
+    private double rollerState;
 
     public static void main(String[] args) {
         // System.out.println((int) (0.75 * Const.kTableRot2RollerRot *
@@ -55,20 +59,27 @@ public class Intake extends SubsystemBase {
         // Const.kRot2TalonRaw));
         // motor.configMotionAcceleration(2000);
 
+        pistonState = piston.get().equals(Const.kIntakeEngagePistonPos);
+        pistonStateValidAfter = Timer.getFPGATimestamp();
+        angleState = getEncoderPosition();
+        rollerState = 0;
         log("Init");
     }
 
     public void setRoller(double speed) {
+        if (speed == rollerState)
+            return;
+        rollerState = speed;
         rollerMotor.set(ControlMode.PercentOutput, speed);
     }
 
-    public void setAngleMotor(double speed) {
+    public void setAngleMotorPercentage(double speed) {
         angleMotor.set(ControlMode.PercentOutput, speed);
     }
 
     public void resetEncoder(double resetToDeg) {
         int intVal = (int) (resetToDeg * Const.kDeg2Rot * Const.kRot2TalonRaw);
-        angleMotor.setSelectedSensorPosition(intVal, pidIdx, 30);
+        angleMotor.setSelectedSensorPosition(intVal, 0, 30);
     }
 
     public double getEncoderPosition() {
@@ -79,21 +90,34 @@ public class Intake extends SubsystemBase {
         return angleMotor.getSelectedSensorVelocity() * Const.kTalon100Ms2sec * Const.kTalonRaw2Rot * Const.kRot2Deg;
     }
 
-    public void setSetpoint(double degs) {
+    public void setAngle(double degs) {
+        if (degs == angleState)
+            return;
+        angleState = degs;
         angleMotor.set(ControlMode.MotionMagic, degs * Const.kDeg2Rot * Const.kRot2TalonRaw);
         log("setSetpoint: " + degs + "degs");
     }
 
-    public boolean getEngaged() {
-        return piston.get().equals(Const.kIntakeEngagePistonPos);
+    public boolean onTarget() {
+        return Math.abs(getEncoderPosition() - angleState) <= Const.kIntakePositionTolerance
+                && Math.abs(getEncoderVelocity()) <= Const.kIntakeVelocityTolerance;
+    }
+
+    public boolean getPiston() {
+        return Timer.getFPGATimestamp() >= pistonStateValidAfter ? pistonState : !pistonState;
     }
 
     public void engageIntake(boolean engage) {
-        if (engage) {
+        if (engage == pistonState)// not getPiston() which is the current state
+            return; // pistonState is the target state, which is what we want
+
+        if (engage)
             piston.set(Const.kIntakeEngagePistonPos);
-        } else {
+        else
             piston.set(Const.kIntakeNOTEngagePistonPos);
-        }
+
+        pistonState = engage;
+        pistonStateValidAfter = Timer.getFPGATimestamp() + Const.kIntakePistonMoveDelay;
     }
 
     public void debug() {

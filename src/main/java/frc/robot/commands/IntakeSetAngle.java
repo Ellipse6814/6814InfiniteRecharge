@@ -1,34 +1,35 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Const;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Logger;
 
-public class IntakeSetPiston extends CommandBase {
+public class IntakeSetAngle extends CommandBase {
 
   private Logger logger = Logger.getInstance();
 
   private void log(Object msg) {
-    logger.log("IntakeSetPiston", msg);
+    logger.log("IntakeSetAngle", msg);
   }
 
   private final Intake intake = Intake.getInstance();
-  private boolean engageIntake;
+  private double angle;
 
-
-  public IntakeSetPiston(boolean engageIntake) {
-    this.engageIntake = engageIntake;
+  public IntakeSetAngle(double angle) {
+    this.angle = angle;
   }
 
   @Override
   public void initialize() {
     log("Starting");
-    intake.engageIntake(engageIntake);
+    intake.setAngle(angle);
   }
 
   @Override
   public boolean isFinished() {
-    return intake.getPiston() == engageIntake;
+    return intake.onTarget();
   }
 
   @Override

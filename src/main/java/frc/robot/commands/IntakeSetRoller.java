@@ -1,34 +1,38 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Logger;
+import frc.robot.subsystems.Intake;
 
-public class IntakeSetPiston extends CommandBase {
+public class IntakeSetRoller extends CommandBase {
 
   private Logger logger = Logger.getInstance();
 
   private void log(Object msg) {
-    logger.log("IntakeSetPiston", msg);
+    logger.log("IntakeSetRoller", msg);
   }
 
   private final Intake intake = Intake.getInstance();
-  private boolean engageIntake;
+  private double speed;
 
-
-  public IntakeSetPiston(boolean engageIntake) {
-    this.engageIntake = engageIntake;
+  public IntakeSetRoller(double speed) {
+    this.speed = speed;
   }
 
   @Override
   public void initialize() {
     log("Starting");
-    intake.engageIntake(engageIntake);
+    intake.setRoller(speed);
+  }
+
+  @Override
+  public void execute() {
+    intake.setRoller(speed);
   }
 
   @Override
   public boolean isFinished() {
-    return intake.getPiston() == engageIntake;
+    return false;
   }
 
   @Override
