@@ -4,30 +4,30 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Logger;
 
-public class IntakeSetAngle extends CommandBase {
+public class IntakeSetPercentage extends CommandBase {
 
   private Logger logger = Logger.getInstance();
 
   private void log(Object msg) {
-    logger.log("IntakeSetAngle", msg);
+    logger.log("IntakeSetPercentage", msg);
   }
 
   private final Intake intake = Intake.getInstance();
-  private double angle;
+  private double speed;
 
-  public IntakeSetAngle(double angle) {
-    this.angle = angle;
+  public IntakeSetPercentage(double speed) {
+    this.speed = speed;
   }
 
   @Override
   public void initialize() {
     log("Starting");
-    intake.setAngle(angle);
+    intake.setAngleMotorPercentage(speed);
   }
 
   @Override
   public boolean isFinished() {
-    return intake.onTarget();
+    return false;
   }
 
   @Override

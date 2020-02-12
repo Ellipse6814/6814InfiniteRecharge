@@ -4,7 +4,6 @@ import com.revrobotics.ColorMatch;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.util.Color;
-import frc.robot.*;
 
 public class Const {
 
@@ -22,21 +21,7 @@ public class Const {
     public static final double kINF = 1e8;
 
     // _robot
-    public static final Color kBlue = ColorMatch.makeColor(0.143, 0.427, 0.429); // Color(0.12, 0.42, 0.44);
-    public static final Color kGreen = ColorMatch.makeColor(0.197, 0.561, 0.240); // Color(0.18, 0.59, 0.23);
-    public static final Color kRed = ColorMatch.makeColor(0.561, 0.232, 0.114); // Color(0.5, 0.34, 0.15);
-    public static final Color kYellow = ColorMatch.makeColor(0.361, 0.524, 0.113); // Color(0.34, 0.55, 0.11);
-
-    public static final double kEffectiveTableDiameter = 29;
-    public static final double kTableRollerDiameter = 3;
-    public static final double kTableRot2RollerRot = (Math.PI * kEffectiveTableDiameter)
-            / (Math.PI * kTableRollerDiameter);
-    public static final double kRollerRot2TableRot = 1 / kTableRot2RollerRot;
-
     public static final int kCANTimeout = 30;
-
-    public static final double kTableSliceDeg = 45.0;
-    public static final double kTableSliceRollerDeg = kTableSliceDeg * kTableRot2RollerRot;
 
     // _drive
     public static final int kDriveLeftMotorPort = 1;
@@ -64,6 +49,22 @@ public class Const {
     public static final double kTableEngageDelaySec = 1;
     public static final double kTableDeployDelaySec = 1;
 
+    public static final Color kBlue = ColorMatch.makeColor(0.143, 0.427, 0.429); // Color(0.12, 0.42, 0.44);
+    public static final Color kGreen = ColorMatch.makeColor(0.197, 0.561, 0.240); // Color(0.18, 0.59, 0.23);
+    public static final Color kRed = ColorMatch.makeColor(0.561, 0.232, 0.114); // Color(0.5, 0.34, 0.15);
+    public static final Color kYellow = ColorMatch.makeColor(0.361, 0.524, 0.113); // Color(0.34, 0.55, 0.11);
+
+    public static final double kEffectiveTableDiameter = 29;
+    public static final double kTableRollerDiameter = 3;
+    public static final double kTableRot2RollerRot = (Math.PI * kEffectiveTableDiameter)
+            / (Math.PI * kTableRollerDiameter);
+    public static final double kRollerRot2TableRot = 1 / kTableRot2RollerRot;
+
+    public static final double kTableSliceDeg = 45.0;
+    public static final double kTableSliceRollerDeg = kTableSliceDeg * kTableRot2RollerRot;
+    public static final double kTableSliceOverSpinPercentage = 0.5;
+    public static final int kTableRotationSlices = 10;
+
     // _elevator
     public static final int kElevatorSolonoidPort1 = -2;
     public static final int kElevatorSolonoidPort2 = -3;
@@ -83,6 +84,7 @@ public class Const {
     public static final double kIntakeGroundAngle = 1;
     public static final double kIntakeHideAngle = 1;
     public static final double kIntakeShootAngle = 0;
+    public static final double deltaDegreesOnRoller = Const.kTableSliceRollerDeg;
 
     // _LED
     public static final int kLEDPort = -1;

@@ -30,6 +30,8 @@ public class Intake extends SubsystemBase {
     public final TalonSRX rollerMotor = new TalonSRX(Const.kTableMotorPort);// TODO: move these to the constructor
     private final DoubleSolenoid piston;
 
+    private final TableCalculator tableCalculator = TableCalculator.getInstance();
+
     private boolean pistonState;
     private double pistonStateValidAfter;
     private double angleState;

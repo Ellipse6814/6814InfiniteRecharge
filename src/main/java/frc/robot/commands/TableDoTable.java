@@ -4,10 +4,14 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Logger;
 
 public class TableDoTable extends SequentialCommandGroup {
-    public TableDoTable(boolean colorTask) {
+
+    private boolean doColor;
+
+    public TableDoTable(boolean doColor) {
+        this.doColor = doColor;
         addCommands(//
                 new TableEngage(true), //
-                colorTask ? new TableRotateToColor() : new TableRotateToRotations(), //
+                new TableRotate(doColor), //
                 new TableEngage(false)//
         );
     }
@@ -21,5 +25,6 @@ public class TableDoTable extends SequentialCommandGroup {
     @Override
     public void initialize() {
         log("Starting");
+        log("doColor = " + doColor);
     }
 }

@@ -33,6 +33,10 @@ public class Table extends SubsystemBase {
     public final TalonSRX motor = new TalonSRX(Const.kTableMotorPort);
     private final TableColorDetector tableColorDetector = TableColorDetector.getInstance();
 
+    private int direction;
+    private double degs;
+    private double prevStableEncoderVal;
+
     public static void main(String[] args) {
         // System.out.println((int) (0.75 * Const.kTableRot2RollerRot *
         // Const.kSec2Talon100Ms * Const.kRot2TalonRaw));
@@ -65,6 +69,35 @@ public class Table extends SubsystemBase {
 
     public TableColor peekColor() {
         return tableColorDetector.getTableColor();
+    }
+
+    public void stableSpinDegs(double degs) {
+        this.degs = degs;
+        direction = getSign(degs);
+        initColorSensor(direction);
+        resetEncoder(0);
+        setSetpoint(degs);
+    }
+
+    public void updateColorSensorComplementaryFilter() {
+        boolean edgeChanged = getDeltaEdge();
+        if (edgeChanged) {
+            prevStableEncoderVal += Const.deltaDegreesOnRoller * direction;
+            log("wrongEncoderVal: " + motor.getSelectedSensorPosition() * Const.kTalonRaw2Rot * Const.kRot2Deg);
+            log("prevStableEncoderVal: " + prevStableEncoderVal);
+
+            double newSetpoint = getEncoderPosition() + degs - prevStableEncoderVal;
+            setSetpoint(newSetpoint);
+        }
+    }
+
+    public boolean onTarget() {
+        if (Math.abs(degs - getEncoderPosition()) < 10 && Math.abs(getEncoderVelocity()) < 5) {
+            log("met tolerance " + Math.abs(degs - getEncoderPosition()) + "deg");
+            log("met tolerance " + Math.abs(getEncoderVelocity()) + "deg/s");
+            return true;
+        }
+        return false;
     }
 
     public void initColorSensor(int direction) {
@@ -108,5 +141,13 @@ public class Table extends SubsystemBase {
 
     public void debug() {
         SmartDashboard.putNumber("Setpoint", motor.getClosedLoopTarget() * Const.kDeg2Rot * Const.kRot2TalonRaw);
+    }
+
+    private int getSign(double a) {
+        if (a > 0)
+            return 1;
+        if (a < 0)
+            return -1;
+        return 0;
     }
 }
