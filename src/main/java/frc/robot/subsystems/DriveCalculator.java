@@ -5,7 +5,6 @@ import frc.robot.Const;
 
 public class DriveCalculator {
 
-    public int gear;
     double prevTimestamp, prevPower;
 
     public DriveCalculator() {

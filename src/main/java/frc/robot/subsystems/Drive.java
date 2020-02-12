@@ -7,9 +7,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
 
 public class Drive extends SubsystemBase {
-    // public enum DriveState {
-    //     TeleOp, Auto
-    // }
 
     private Logger logger = Logger.getInstance();
 
