@@ -24,6 +24,7 @@ public class TableRotate extends CommandBase {
     @Override
     public void initialize() {
         log("Starting");
+        log("doColor=" + doColor);
         table.stableSpinDegs(doColor ? tableCalculator.calculateColor() : tableCalculator.calculateRotations());
     }
 
