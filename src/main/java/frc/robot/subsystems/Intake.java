@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -99,7 +100,8 @@ public class Intake extends SubsystemBase {
         if (degs == angleState)
             return;
         angleState = degs;
-        angleMotor.set(ControlMode.MotionMagic, degs * Const.kDeg2Rot * Const.kRot2TalonRaw);
+        angleMotor.set(ControlMode.MotionMagic, degs * Const.kDeg2Rot * Const.kRot2TalonRaw,
+                DemandType.ArbitraryFeedForward, getFeedForward());
         log("setSetpoint: " + degs + "degs");
     }
 

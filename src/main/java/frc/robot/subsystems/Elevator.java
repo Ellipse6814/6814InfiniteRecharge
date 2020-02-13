@@ -1,11 +1,13 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.controller.ElevatorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
@@ -30,6 +32,9 @@ public class Elevator extends SubsystemBase {
 
     private final int pidIdx = 0;
     public final TalonSRX motor = new TalonSRX(Const.kElevatorMotorPort);
+
+    private ElevatorFeedforward elevatorFeedforward = new ElevatorFeedforward(Const.kElevatorkS, Const.kElevatorkG,
+            Const.kElevatorkV, Const.kElevatorkA);
 
     private boolean pistonState;
     private double pistonStateValidAfter;
@@ -78,8 +83,13 @@ public class Elevator extends SubsystemBase {
     }
 
     public void setSetpoint(double degs) {
-        motor.set(ControlMode.MotionMagic, degs * Const.kDeg2Rot * Const.kRot2TalonRaw);
+        motor.set(ControlMode.MotionMagic, degs * Const.kDeg2Rot * Const.kRot2TalonRaw, DemandType.ArbitraryFeedForward,
+                getFeedForward());
         log("setSetpoint: " + degs + "degs");
+    }
+
+    public double getFeedForward() {
+        return elevatorFeedforward.calculate(getEncoderVelocity());// TODO: this needs to be m/s
     }
 
     public boolean getPiston() {

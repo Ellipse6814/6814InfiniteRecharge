@@ -70,6 +70,13 @@ public class Const {
     public static final int kTableRotationSlices = 10;
     public static final double kDeltaDegreesOnRoller = Const.kTableSliceRollerDeg;
 
+    public static final double kTablekP = 0;
+    public static final double kTablekI = 0;
+    public static final double kTablekD = 0;
+    public static final double kTablekS = 0;
+    public static final double kTablekV = 0;
+    public static final double kTablekA = 0;
+
     // _elevator
     public static final int kElevatorSolonoidPort1 = -2;
     public static final int kElevatorSolonoidPort2 = -3;
@@ -80,9 +87,13 @@ public class Const {
 
     public static final double kElevatorPistonMoveDelay = 1;
 
-    public static final double kElevatorkP = 1;
+    public static final double kElevatorkP = 0;
     public static final double kElevatorkI = 0;
     public static final double kElevatorkD = 0;
+    public static final double kElevatorkS = 0;
+    public static final double kElevatorkV = 0;
+    public static final double kElevatorkA = 0;
+    public static final double kElevatorkG = 0;
 
     // _intake
     public static final int kIntakeRollerMotorPort = -1;
