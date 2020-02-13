@@ -87,6 +87,12 @@ public class Const {
 
     public static final double kElevatorPistonMoveDelay = 1;
 
+    public static final double kElevatorPositionTolerance = 1;
+    public static final double kElevatorVelocityTolerance = 1;
+
+    public static final double kElevatorBottomPos = 0;
+    public static final double kElevatorTopPos = 1;
+
     public static final double kElevatorkP = 0;
     public static final double kElevatorkI = 0;
     public static final double kElevatorkD = 0;

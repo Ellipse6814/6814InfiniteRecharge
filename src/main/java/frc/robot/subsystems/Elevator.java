@@ -36,6 +36,7 @@ public class Elevator extends SubsystemBase {
     private ElevatorFeedforward elevatorFeedforward = new ElevatorFeedforward(Const.kElevatorkS, Const.kElevatorkG,
             Const.kElevatorkV, Const.kElevatorkA);
 
+    private double positionState;
     private boolean pistonState;
     private double pistonStateValidAfter;
 
@@ -82,10 +83,18 @@ public class Elevator extends SubsystemBase {
         return motor.getSelectedSensorVelocity() * Const.kTalon100Ms2sec * Const.kTalonRaw2Rot * Const.kRot2Deg;
     }
 
-    public void setSetpoint(double degs) {
-        motor.set(ControlMode.MotionMagic, degs * Const.kDeg2Rot * Const.kRot2TalonRaw, DemandType.ArbitraryFeedForward,
-                getFeedForward());
-        log("setSetpoint: " + degs + "degs");
+    public boolean onTarget() {
+        return Math.abs(getEncoderPosition() - positionState) <= Const.kElevatorPositionTolerance
+                && Math.abs(getEncoderVelocity()) <= Const.kElevatorVelocityTolerance;
+    }
+
+    public void setPosition(double position) {
+        if (position == positionState)
+            return;
+        positionState = position;
+        motor.set(ControlMode.MotionMagic, position * Const.kDeg2Rot * Const.kRot2TalonRaw,
+                DemandType.ArbitraryFeedForward, getFeedForward()); // TODO: units!!
+        log("setSetpoint: " + position + "degs");
     }
 
     public double getFeedForward() {

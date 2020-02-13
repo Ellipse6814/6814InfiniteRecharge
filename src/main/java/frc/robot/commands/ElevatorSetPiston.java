@@ -1,38 +1,33 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Logger;
 
-public class IntakeSetAngle extends CommandBase {
+public class ElevatorSetPiston extends CommandBase {
 
   private Logger logger = Logger.getInstance();
 
   private void log(Object msg) {
-    logger.log("IntakeSetAngle", msg);
+    logger.log("ElevatorSetPiston", msg);
   }
 
-  private final Intake intake = Intake.getInstance();
-  private double angle;
+  private final Elevator elevator = Elevator.getInstance();
+  private boolean engageBrake;
 
-  public IntakeSetAngle(double angle) {
-    this.angle = angle;
+  public ElevatorSetPiston(boolean engageBrake) {
+    this.engageBrake = engageBrake;
   }
 
   @Override
   public void initialize() {
     log("Starting");
-    intake.setAngle(angle);
-  }
-
-  @Override
-  public void execute() {
-    intake.setAngle(angle);
+    elevator.engageBrake(engageBrake);
   }
 
   @Override
   public boolean isFinished() {
-    return intake.onTarget();
+    return elevator.getPiston() == engageBrake;
   }
 
   @Override
