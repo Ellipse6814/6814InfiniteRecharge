@@ -20,8 +20,10 @@ public class Const {
 
     public static final double kINF = 1e8;
 
+    public static final double kDeg2Rad = 2.0 * Math.PI / 360;
+    public static final double kRad2Deg = 1 / kDeg2Rad;
     // _robot
-    public static final int kCANTimeout = 30;
+    public static final int kCANTimeout = 20;
 
     // _drive
     public static final int kDriveLeftMotorPort = 1;
@@ -46,8 +48,10 @@ public class Const {
     public static final int kTableSolonoidPort2 = -1;
     public static final int kTableMotorPort = -1;
 
-    public static final double kTableEngageDelaySec = 1;
-    public static final double kTableDeployDelaySec = 1;
+    public static final Value kTableEngagePistonPos = Value.kForward;
+    public static final Value kTableNOTEngagePistonPos = Value.kReverse;
+
+    public static final double kTablePistonMoveDelay = 1;
 
     public static final Color kBlue = ColorMatch.makeColor(0.143, 0.427, 0.429); // Color(0.12, 0.42, 0.44);
     public static final Color kGreen = ColorMatch.makeColor(0.197, 0.561, 0.240); // Color(0.18, 0.59, 0.23);
@@ -64,11 +68,21 @@ public class Const {
     public static final double kTableSliceRollerDeg = kTableSliceDeg * kTableRot2RollerRot;
     public static final double kTableSliceOverSpinPercentage = 0.5;
     public static final int kTableRotationSlices = 10;
+    public static final double kDeltaDegreesOnRoller = Const.kTableSliceRollerDeg;
 
     // _elevator
     public static final int kElevatorSolonoidPort1 = -2;
     public static final int kElevatorSolonoidPort2 = -3;
     public static final int kElevatorMotorPort = -2;
+
+    public static final Value kElevatorEngagePistonPos = Value.kForward;
+    public static final Value kElevatorNOTEngagePistonPos = Value.kReverse;
+
+    public static final double kElevatorPistonMoveDelay = 1;
+
+    public static final double kElevatorkP = 1;
+    public static final double kElevatorkI = 0;
+    public static final double kElevatorkD = 0;
 
     // _intake
     public static final int kIntakeRollerMotorPort = -1;
@@ -84,16 +98,18 @@ public class Const {
     public static final double kIntakeGroundAngle = 1;
     public static final double kIntakeHideAngle = 1;
     public static final double kIntakeShootAngle = 0;
-    public static final double deltaDegreesOnRoller = Const.kTableSliceRollerDeg;
+
+    public static final double kIntakekP = 0;
+    public static final double kIntakekI = 0;
+    public static final double kIntakekD = 0;
+    public static final double kIntakekS = 0;
+    public static final double kIntakekV = 0;
+    public static final double kIntakekA = 0;
+    public static final double kIntakekCos = 0;
+
+    // public static final double
 
     // _LED
     public static final int kLEDPort = -1;
 
-    public static void main(String[] args) {
-        test();
-    }
-
-    public static void test() {
-        // System.out.println(kRollerRot2TableRot);
-    }
 }

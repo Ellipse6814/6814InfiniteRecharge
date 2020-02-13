@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
@@ -25,12 +26,13 @@ public class Intake extends SubsystemBase {
         return instance;
     }
 
-    // private final int pidIdx = 0;
+    private final int pidIdx = 0;
     public final TalonSRX angleMotor = new TalonSRX(Const.kTableMotorPort);
     public final TalonSRX rollerMotor = new TalonSRX(Const.kTableMotorPort);// TODO: move these to the constructor
     private final DoubleSolenoid piston;
 
-    private final TableCalculator tableCalculator = TableCalculator.getInstance();
+    private final ArmFeedforward armFeedforward = new ArmFeedforward(Const.kIntakekS, Const.kIntakekCos,
+            Const.kIntakekV, Const.kIntakekA);
 
     private boolean pistonState;
     private double pistonStateValidAfter;
@@ -44,6 +46,7 @@ public class Intake extends SubsystemBase {
     }
 
     private Intake() {
+        TableCalculator.getInstance();
         // // TODO: put consts in @Link{Const.java}
         piston = new DoubleSolenoid(Const.kTableSolonoidPort1, Const.kTableSolonoidPort2);
         // motor.configFactoryDefault(Const.kTimeout);
@@ -51,7 +54,7 @@ public class Intake extends SubsystemBase {
         // motor.setSelectedSensorPosition(0);
         // motor.setSensorPhase(true);
         // motor.selectProfileSlot(pidIdx, pidIdx);
-        // motor.config_kF(pidIdx, 0., Const.kTimeout);
+        // motor.config_kF(pidIdx, 0, Const.kTimeout);
         // motor.config_kP(pidIdx, 0.25, Const.kTimeout);
         // motor.config_kI(pidIdx, 0.01, Const.kTimeout);
         // motor.config_kD(pidIdx, 0.0, Const.kTimeout);
@@ -98,6 +101,10 @@ public class Intake extends SubsystemBase {
         angleState = degs;
         angleMotor.set(ControlMode.MotionMagic, degs * Const.kDeg2Rot * Const.kRot2TalonRaw);
         log("setSetpoint: " + degs + "degs");
+    }
+
+    public double getFeedForward() {
+        return armFeedforward.calculate(getEncoderPosition() * Const.kDeg2Rad, getEncoderVelocity() * Const.kDeg2Rad);
     }
 
     public boolean onTarget() {

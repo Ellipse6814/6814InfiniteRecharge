@@ -88,7 +88,7 @@ public class Table extends SubsystemBase {
     public void updateColorSensorComplementaryFilter() {
         boolean edgeChanged = getDeltaEdge();
         if (edgeChanged) {
-            prevStableEncoderVal += Const.deltaDegreesOnRoller * direction;
+            prevStableEncoderVal += Const.kDeltaDegreesOnRoller * direction;
             log("wrongEncoderVal: " + motor.getSelectedSensorPosition() * Const.kTalonRaw2Rot * Const.kRot2Deg);
             log("prevStableEncoderVal: " + prevStableEncoderVal);
 
@@ -154,12 +154,12 @@ public class Table extends SubsystemBase {
             return; // pistonState is the target state, which is what we want
 
         if (engage)
-            piston.set(Const.kIntakeEngagePistonPos);
+            piston.set(Const.kTableEngagePistonPos);
         else
-            piston.set(Const.kIntakeNOTEngagePistonPos);
+            piston.set(Const.kTableNOTEngagePistonPos);
 
         pistonState = engage;
-        pistonStateValidAfter = Timer.getFPGATimestamp() + Const.kIntakePistonMoveDelay;
+        pistonStateValidAfter = Timer.getFPGATimestamp() + Const.kTablePistonMoveDelay;
     }
 
     public void debug() {

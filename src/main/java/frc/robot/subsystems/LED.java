@@ -8,6 +8,12 @@ import frc.robot.Const;
 
 public class LED extends SubsystemBase {
 
+  private Logger logger = Logger.getInstance();
+
+  private void log(Object msg) {
+    logger.log("LED", msg);
+  }
+
   private static LED instance;
 
   public static LED getInstance() {

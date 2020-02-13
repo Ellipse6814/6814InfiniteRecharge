@@ -5,7 +5,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
@@ -29,7 +29,10 @@ public class Elevator extends SubsystemBase {
     private final DoubleSolenoid piston;
 
     private final int pidIdx = 0;
-    public final TalonSRX motor = new TalonSRX(Const.kTableMotorPort);
+    public final TalonSRX motor = new TalonSRX(Const.kElevatorMotorPort);
+
+    private boolean pistonState;
+    private double pistonStateValidAfter;
 
     public static void main(String[] args) {
         // System.out.println((int) (0.75 * Const.kTableRot2RollerRot *
@@ -64,7 +67,6 @@ public class Elevator extends SubsystemBase {
         // log(errorVal.toString());
         // log("Encoder actually reset to: " +
         // motor.getSelectedSensorPosition());
-
     }
 
     public double getEncoderPosition() {
@@ -80,12 +82,21 @@ public class Elevator extends SubsystemBase {
         log("setSetpoint: " + degs + "degs");
     }
 
-    public void engageRoller(boolean engageRoller) {
-        if (engageRoller) {
-            piston.set(Value.kForward);
-        } else {
-            piston.set(Value.kReverse);
-        }
+    public boolean getPiston() {
+        return Timer.getFPGATimestamp() >= pistonStateValidAfter ? pistonState : !pistonState;
+    }
+
+    public void engageBrake(boolean engage) {
+        if (engage == pistonState)// not getPiston() which is the current state
+            return; // pistonState is the target state, which is what we want
+
+        if (engage)
+            piston.set(Const.kElevatorEngagePistonPos);
+        else
+            piston.set(Const.kElevatorNOTEngagePistonPos);
+
+        pistonState = engage;
+        pistonStateValidAfter = Timer.getFPGATimestamp() + Const.kElevatorPistonMoveDelay;
     }
 
     public void stopMotor() {
