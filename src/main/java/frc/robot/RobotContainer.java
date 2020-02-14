@@ -65,8 +65,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    JoystickButton button = new JoystickButton(driverJoy, 1);
-    button.whenPressed(command)
+    // JoystickButton button = new JoystickButton(driverJoy, 1);
+    // button.whenPressed(command)
 
     log("Inited");
   }
