@@ -5,7 +5,7 @@ import frc.robot.Const;
 import frc.robot.subsystems.Logger;
 
 public class IntakeGround extends SequentialCommandGroup {
-    public IntakeGround(boolean colorTask) {
+    public IntakeGround() {
         addCommands(//
                 new IntakeSetPiston(true), //
                 new IntakeSetAngle(Const.kIntakeHideAngle)//

@@ -5,7 +5,7 @@ import frc.robot.Const;
 import frc.robot.subsystems.Logger;
 
 public class IntakeAim extends SequentialCommandGroup {
-    public IntakeAim(boolean colorTask) {
+    public IntakeAim() {
         addCommands(//
                 new IntakeSetPiston(true), //
                 new IntakeSetAngle(Const.kIntakeShootAngle)//

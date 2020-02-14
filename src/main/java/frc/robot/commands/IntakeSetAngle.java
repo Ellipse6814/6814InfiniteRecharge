@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeAngleMotor;
 import frc.robot.subsystems.Logger;
 
-public class IntakeSetAngle extends CommandBase {
+public class IntakeSetAngle extends PartialFinishableCommand {
 
     private Logger logger = Logger.getInstance();
 
@@ -33,6 +33,11 @@ public class IntakeSetAngle extends CommandBase {
 
     @Override
     public boolean isFinished() {
+        return false;
+    }
+
+    @Override
+    public boolean isPartialFinished() {
         return intakeAngleMotor.onTarget();
     }
 
@@ -40,4 +45,5 @@ public class IntakeSetAngle extends CommandBase {
     public void end(boolean interrupted) {
         log("Ended with interrupted = [" + interrupted + "]");
     }
+
 }

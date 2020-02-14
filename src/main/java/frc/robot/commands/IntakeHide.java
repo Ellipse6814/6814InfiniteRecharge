@@ -5,9 +5,15 @@ import frc.robot.Const;
 import frc.robot.subsystems.Logger;
 
 public class IntakeHide extends SequentialCommandGroup {
-    public IntakeHide(boolean colorTask) {
+    // public IntakeHide() {
+    // addCommands(//
+    // new IntakeSetAngle(Const.kIntakeHideAngle), //
+    // new IntakeSetPiston(false) //
+    // );
+    // }
+    public IntakeHide() {
         addCommands(//
-                new IntakeSetAngle(Const.kIntakeHideAngle), //
+                new PartialFinish(new IntakeSetAngle(Const.kIntakeHideAngle)), //
                 new IntakeSetPiston(false) //
         );
     }
