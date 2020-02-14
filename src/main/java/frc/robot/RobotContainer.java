@@ -1,16 +1,22 @@
 package frc.robot;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Util.Debugable;
-import frc.robot.commands.*;
-import frc.robot.subsystems.*;
+import frc.robot.commands.DriveAutoTime;
+import frc.robot.commands.DriveTeleOp;
+import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.ElevatorBrake;
+import frc.robot.subsystems.ElevatorMotor;
+import frc.robot.subsystems.IntakeAngleMotor;
+import frc.robot.subsystems.IntakePiston;
+import frc.robot.subsystems.IntakeRoller;
+import frc.robot.subsystems.LED;
+import frc.robot.subsystems.Logger;
+import frc.robot.subsystems.TableMotor;
+import frc.robot.subsystems.TablePiston;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
