@@ -5,11 +5,8 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.DriveAutoTime;
-import frc.robot.commands.DriveTeleOp;
-import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.Logger;
-import frc.robot.subsystems.Table;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -30,6 +27,9 @@ public class RobotContainer {
   private Compressor compressor = new Compressor();
   private Table table = Table.getInstance();
   private Drive drive = Drive.getInstance();
+  private Elevator elevator = Elevator.getInstance();
+  private Intake intake = Intake.getInstance();
+  private LED led = LED.getInstance();
 
   // Operator Interfaces
   private Joystick driverJoy = new Joystick(0);
@@ -56,6 +56,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     drive.setDefaultCommand(new DriveTeleOp(() -> driverJoy.getRawAxis(1), () -> driverJoy.getRawAxis(4)));
+    intake.setDefaultCommand(new IntakeSetRoller(Const.kIntakeHoldSpd));
+    elevator.setDefaultCommand(new ElevatorSetPercentage(0));
   }
 
   /**

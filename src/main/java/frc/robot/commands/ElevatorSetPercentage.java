@@ -4,37 +4,37 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Logger;
 
-public class ElevatorSetPosition extends CommandBase {
+public class ElevatorSetPercentage extends CommandBase {
 
   private Logger logger = Logger.getInstance();
 
   private void log(Object msg) {
-    logger.log("ElevatorSetPosition", msg);
+    logger.log("ElevatorSetPercentage", msg);
   }
 
   private final Elevator elevator = Elevator.getInstance();
-  private double position;
+  private double Speed;
 
-  public ElevatorSetPosition(double position) {
-    this.position = position;
+  public ElevatorSetPercentage(double Speed) {
+    this.Speed = Speed;
     addRequirements(elevator);
   }
 
   @Override
   public void initialize() {
     log("Starting");
-    elevator.setPosition(position);
+    elevator.setSpeed(Speed);
     ;
   }
 
   @Override
   public void execute() {
-    elevator.setPosition(position);
+    elevator.setSpeed(Speed);
   }
 
   @Override
   public boolean isFinished() {
-    return elevator.onTarget();
+    return false;
   }
 
   @Override

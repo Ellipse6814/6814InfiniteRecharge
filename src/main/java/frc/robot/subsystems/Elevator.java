@@ -97,6 +97,10 @@ public class Elevator extends SubsystemBase {
         log("setSetpoint: " + position + "degs");
     }
 
+    public void setSpeed(double speed) {
+        motor.set(ControlMode.PercentOutput, speed);
+    }
+
     public double getFeedForward() {
         return elevatorFeedforward.calculate(getEncoderVelocity());// TODO: this needs to be m/s
     }
@@ -119,7 +123,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public void stopMotor() {
-        motor.set(ControlMode.PercentOutput, 0);
+        setSpeed(0);
     }
 
     public void debug() {

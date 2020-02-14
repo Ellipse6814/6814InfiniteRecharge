@@ -116,6 +116,10 @@ public class Const {
     public static final double kIntakeHideAngle = 1;
     public static final double kIntakeShootAngle = 0;
 
+    public static final double kIntakeHoldSpd = 0.2;
+    public static final double kIntakeInSpd = -1;
+    public static final double kIntakeOutSpd = 1;
+
     public static final double kIntakekP = 0;
     public static final double kIntakekI = 0;
     public static final double kIntakekD = 0;

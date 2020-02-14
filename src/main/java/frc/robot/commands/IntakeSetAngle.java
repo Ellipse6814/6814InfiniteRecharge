@@ -6,37 +6,38 @@ import frc.robot.subsystems.Logger;
 
 public class IntakeSetAngle extends CommandBase {
 
-  private Logger logger = Logger.getInstance();
+    private Logger logger = Logger.getInstance();
 
-  private void log(Object msg) {
-    logger.log("IntakeSetAngle", msg);
-  }
+    private void log(Object msg) {
+        logger.log("IntakeSetAngle", msg);
+    }
 
-  private final Intake intake = Intake.getInstance();
-  private double angle;
+    private final Intake intake = Intake.getInstance();
+    private double angle;
 
-  public IntakeSetAngle(double angle) {
-    this.angle = angle;
-  }
+    public IntakeSetAngle(double angle) {
+        this.angle = angle;
+        addRequirements(intake);
+    }
 
-  @Override
-  public void initialize() {
-    log("Starting");
-    intake.setAngle(angle);
-  }
+    @Override
+    public void initialize() {
+        log("Starting");
+        intake.setAngle(angle);
+    }
 
-  @Override
-  public void execute() {
-    intake.setAngle(angle);
-  }
+    @Override
+    public void execute() {
+        intake.setAngle(angle);
+    }
 
-  @Override
-  public boolean isFinished() {
-    return intake.onTarget();
-  }
+    @Override
+    public boolean isFinished() {
+        return intake.onTarget();
+    }
 
-  @Override
-  public void end(boolean interrupted) {
-    log("Ended with interrupted = [" + interrupted + "]");
-  }
+    @Override
+    public void end(boolean interrupted) {
+        log("Ended with interrupted = [" + interrupted + "]");
+    }
 }
