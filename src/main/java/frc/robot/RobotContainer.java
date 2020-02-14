@@ -1,10 +1,14 @@
 package frc.robot;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Util.Debugable;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -25,10 +29,20 @@ public class RobotContainer {
 
   // Subsystems
   private Compressor compressor = new Compressor();
-  private Table table = Table.getInstance();
+  // private Table table = Table.getInstance();
+  // private Drive drive = Drive.getInstance();
+  // private Elevator elevator = Elevator.getInstance();
+  // private Intake intake = Intake.getInstance();
+  // private LED led = LED.getInstance();
+
   private Drive drive = Drive.getInstance();
-  private Elevator elevator = Elevator.getInstance();
-  private Intake intake = Intake.getInstance();
+  private IntakeAngleMotor intakeAngleMotor = IntakeAngleMotor.getInstance();
+  private IntakePiston intakePiston = IntakePiston.getInstance();
+  private IntakeRoller intakeRoller = IntakeRoller.getInstance();
+  private TableMotor tableMotor = TableMotor.getInstance();
+  private TablePiston tablePiston = TablePiston.getInstance();
+  private ElevatorMotor elevatorMotor = ElevatorMotor.getInstance();
+  private ElevatorBrake elevatorBrake = ElevatorBrake.getInstance();
   private LED led = LED.getInstance();
 
   // Operator Interfaces
@@ -56,8 +70,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     drive.setDefaultCommand(new DriveTeleOp(() -> driverJoy.getRawAxis(1), () -> driverJoy.getRawAxis(4)));
-    intake.setDefaultCommand(new IntakeSetRoller(Const.kIntakeHoldSpd));
-    elevator.setDefaultCommand(new ElevatorSetPercentage(0));
+    // intake.setDefaultCommand(new IntakeSetRoller(Const.kIntakeHoldSpd));
+    // elevator.setDefaultCommand(new ElevatorSetPercentage(0));
   }
 
   /**
@@ -71,6 +85,14 @@ public class RobotContainer {
   }
 
   public void debug() {
-    // TODO: add subsystems
+    drive.debug();
+    intakeAngleMotor.debug();
+    intakePiston.debug();
+    intakeRoller.debug();
+    tableMotor.debug();
+    tablePiston.debug();
+    elevatorMotor.debug();
+    elevatorBrake.debug();
+    led.debug();
   }
 }

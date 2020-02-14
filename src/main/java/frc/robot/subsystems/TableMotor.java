@@ -12,25 +12,24 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
+import frc.robot.Util.Debugable;
 import frc.robot.subsystems.TableColorDetector.TableColor;
 
-public class Table extends SubsystemBase {
+public class TableMotor extends SubsystemBase implements Debugable {
 
     private Logger logger = Logger.getInstance();
 
     private void log(Object msg) {
-        logger.log("Table", msg);
+        logger.log("TableMotor", msg);
     }
 
-    private static Table instance;
+    private static TableMotor instance;
 
-    public static Table getInstance() {
+    public static TableMotor getInstance() {
         if (instance == null)
-            instance = new Table();
+            instance = new TableMotor();
         return instance;
     }
-
-    private final DoubleSolenoid piston;
 
     private final int pidIdx = 0;
     public final TalonSRX motor = new TalonSRX(Const.kTableMotorPort);
@@ -42,18 +41,7 @@ public class Table extends SubsystemBase {
     private double degs;
     private double prevStableEncoderVal;
 
-    private boolean pistonState;
-    private double pistonStateValidAfter;
-
-    public static void main(String[] args) {
-        // System.out.println((int) (0.75 * Const.kTableRot2RollerRot *
-        // Const.kSec2Talon100Ms * Const.kRot2TalonRaw));
-        // System.out.println(506 * Const.kDeg2Rot * Const.kRot2TalonRaw);
-    }
-
-    private Table() {
-        // TODO: put consts in @Link{Const.java}
-        piston = new DoubleSolenoid(Const.kTableSolonoidPort1, Const.kTableSolonoidPort2);
+    private TableMotor() {
         motor.configFactoryDefault(Const.kCANTimeout);
         motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
         motor.setSelectedSensorPosition(0);
@@ -68,8 +56,6 @@ public class Table extends SubsystemBase {
                 (int) (0.75 * Const.kTableRot2RollerRot * Const.kSec2Talon100Ms * Const.kRot2TalonRaw));
         motor.configMotionAcceleration(2000);
 
-        pistonState = piston.get().equals(Const.kIntakeEngagePistonPos);
-        pistonStateValidAfter = Timer.getFPGATimestamp();
         log("Init");
     }
 
@@ -81,12 +67,26 @@ public class Table extends SubsystemBase {
         return tableColorDetector.getTableColor();
     }
 
+    public void initColorSensor(int direction) {
+        tableColorDetector.init(direction);
+    }
+
     public void stableSpinDegs(double degs) {
         this.degs = degs;
         direction = getSign(degs);
         initColorSensor(direction);
         resetEncoder(0);
         setSetpoint(degs);
+    }
+
+    public void setSetpoint(double degs) {
+        motor.set(ControlMode.MotionMagic, degs * Const.kDeg2Rot * Const.kRot2TalonRaw, DemandType.ArbitraryFeedForward,
+                getFeedForward());
+        log("setSetpoint: " + degs + "degs");
+    }
+
+    public double getFeedForward() {
+        return simpleMotorFeedforward.calculate(getEncoderVelocity());// TODO: this needs to be m/s
     }
 
     public void updateColorSensorComplementaryFilter() {
@@ -99,19 +99,6 @@ public class Table extends SubsystemBase {
             double newSetpoint = getEncoderPosition() + degs - prevStableEncoderVal;
             setSetpoint(newSetpoint);
         }
-    }
-
-    public boolean onTarget() {
-        if (Math.abs(degs - getEncoderPosition()) < 10 && Math.abs(getEncoderVelocity()) < 5) {
-            log("met tolerance " + Math.abs(degs - getEncoderPosition()) + "deg");
-            log("met tolerance " + Math.abs(getEncoderVelocity()) + "deg/s");
-            return true;
-        }
-        return false;
-    }
-
-    public void initColorSensor(int direction) {
-        tableColorDetector.init(direction);
     }
 
     public void resetEncoder(double resetToDeg) {
@@ -132,43 +119,13 @@ public class Table extends SubsystemBase {
         return motor.getSelectedSensorVelocity() * Const.kTalon100Ms2sec * Const.kTalonRaw2Rot * Const.kRot2Deg;
     }
 
-    public double getFeedForward() {
-        return simpleMotorFeedforward.calculate(getEncoderVelocity());// TODO: this needs to be m/s
-    }
-
-    public void setSetpoint(double degs) {
-        motor.set(ControlMode.MotionMagic, degs * Const.kDeg2Rot * Const.kRot2TalonRaw, DemandType.ArbitraryFeedForward,
-                getFeedForward());
-        log("setSetpoint: " + degs + "degs");
-    }
-
-    public void engageRoller(boolean engageRoller) {
-        if (engageRoller) {
-            piston.set(Value.kForward);
-        } else {
-            piston.set(Value.kReverse);
+    public boolean onTarget() {
+        if (Math.abs(degs - getEncoderPosition()) < 10 && Math.abs(getEncoderVelocity()) < 5) {
+            log("met tolerance " + Math.abs(degs - getEncoderPosition()) + "deg");
+            log("met tolerance " + Math.abs(getEncoderVelocity()) + "deg/s");
+            return true;
         }
-    }
-
-    public void stopMotor() {
-        motor.set(ControlMode.PercentOutput, 0);
-    }
-
-    public boolean getPiston() {
-        return Timer.getFPGATimestamp() >= pistonStateValidAfter ? pistonState : !pistonState;
-    }
-
-    public void engageTable(boolean engage) {
-        if (engage == pistonState)// not getPiston() which is the current state
-            return; // pistonState is the target state, which is what we want
-
-        if (engage)
-            piston.set(Const.kTableEngagePistonPos);
-        else
-            piston.set(Const.kTableNOTEngagePistonPos);
-
-        pistonState = engage;
-        pistonStateValidAfter = Timer.getFPGATimestamp() + Const.kTablePistonMoveDelay;
+        return false;
     }
 
     public void debug() {

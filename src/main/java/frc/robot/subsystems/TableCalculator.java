@@ -21,7 +21,7 @@ public class TableCalculator {
         logger.log("TableCalculator", msg);
     }
 
-    private Table table = Table.getInstance();
+    private TableMotor table = TableMotor.getInstance();
 
     public double calculateColor() {
         TableColor theirColor = getGameData();

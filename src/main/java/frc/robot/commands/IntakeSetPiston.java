@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakePiston;
 import frc.robot.subsystems.Logger;
 
 public class IntakeSetPiston extends CommandBase {
@@ -12,22 +12,23 @@ public class IntakeSetPiston extends CommandBase {
         logger.log("IntakeSetPiston", msg);
     }
 
-    private final Intake intake = Intake.getInstance();
+    private final IntakePiston intakePiston = IntakePiston.getInstance();
     private boolean engageIntake;
 
     public IntakeSetPiston(boolean engageIntake) {
         this.engageIntake = engageIntake;
+        addRequirements(intakePiston);
     }
 
     @Override
     public void initialize() {
         log("Starting");
-        intake.engageIntake(engageIntake);
+        intakePiston.engageIntake(engageIntake);
     }
 
     @Override
     public boolean isFinished() {
-        return intake.getPiston() == engageIntake;
+        return intakePiston.getPiston() == engageIntake;
     }
 
     @Override

@@ -1,34 +1,29 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.Logger;
-import frc.robot.subsystems.TablePiston;
 
-public class TableEngage extends CommandBase {
+public class DoNothing extends CommandBase {
 
     private Logger logger = Logger.getInstance();
 
     private void log(Object msg) {
-        logger.log("TableEngage", msg);
+        logger.log("DoNothing", msg);
     }
 
-    private final TablePiston tablePiston = TablePiston.getInstance();
-    private boolean engageTable;
-
-    public TableEngage(boolean engageTable) {
-        this.engageTable = engageTable;
-        addRequirements(tablePiston);
+    public DoNothing(SubsystemBase subsystem) {
+        addRequirements(subsystem);
     }
 
     @Override
     public void initialize() {
         log("Starting");
-        tablePiston.engageTable(engageTable);
     }
 
     @Override
     public boolean isFinished() {
-        return tablePiston.getPiston() == engageTable;
+        return false;
     }
 
     @Override

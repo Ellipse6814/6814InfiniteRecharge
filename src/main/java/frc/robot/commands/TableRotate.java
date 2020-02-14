@@ -2,8 +2,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Logger;
-import frc.robot.subsystems.Table;
 import frc.robot.subsystems.TableCalculator;
+import frc.robot.subsystems.TableMotor;
 
 public class TableRotate extends CommandBase {
     private Logger logger = Logger.getInstance();
@@ -12,7 +12,7 @@ public class TableRotate extends CommandBase {
         logger.log("TableRotate", msg);
     }
 
-    private Table table = Table.getInstance();
+    private TableMotor tableMotor = TableMotor.getInstance();
     private TableCalculator tableCalculator = TableCalculator.getInstance();
 
     private boolean doColor;
@@ -25,12 +25,12 @@ public class TableRotate extends CommandBase {
     public void initialize() {
         log("Starting");
         log("doColor=" + doColor);
-        table.stableSpinDegs(doColor ? tableCalculator.calculateColor() : tableCalculator.calculateRotations());
+        tableMotor.stableSpinDegs(doColor ? tableCalculator.calculateColor() : tableCalculator.calculateRotations());
     }
 
     @Override
     public void execute() {
-        table.updateColorSensorComplementaryFilter();
+        tableMotor.updateColorSensorComplementaryFilter();
     }
 
     @Override
@@ -40,6 +40,6 @@ public class TableRotate extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return table.onTarget();
+        return tableMotor.onTarget();
     }
 }

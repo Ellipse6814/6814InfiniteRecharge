@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeAngleMotor;
 import frc.robot.subsystems.Logger;
 
 public class IntakeSetAngle extends CommandBase {
@@ -12,28 +12,28 @@ public class IntakeSetAngle extends CommandBase {
         logger.log("IntakeSetAngle", msg);
     }
 
-    private final Intake intake = Intake.getInstance();
+    private final IntakeAngleMotor intakeAngleMotor = IntakeAngleMotor.getInstance();
     private double angle;
 
     public IntakeSetAngle(double angle) {
         this.angle = angle;
-        addRequirements(intake);
+        addRequirements(intakeAngleMotor);
     }
 
     @Override
     public void initialize() {
         log("Starting");
-        intake.setAngle(angle);
+        intakeAngleMotor.setAngle(angle);
     }
 
     @Override
     public void execute() {
-        intake.setAngle(angle);
+        intakeAngleMotor.setAngle(angle);
     }
 
     @Override
     public boolean isFinished() {
-        return intake.onTarget();
+        return intakeAngleMotor.onTarget();
     }
 
     @Override

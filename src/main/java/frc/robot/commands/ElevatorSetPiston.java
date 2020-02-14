@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.ElevatorBrake;
 import frc.robot.subsystems.Logger;
 
 public class ElevatorSetPiston extends CommandBase {
@@ -12,22 +12,23 @@ public class ElevatorSetPiston extends CommandBase {
     logger.log("ElevatorSetPiston", msg);
   }
 
-  private final Elevator elevator = Elevator.getInstance();
+  private final ElevatorBrake elevatorBrake = ElevatorBrake.getInstance();
   private boolean engageBrake;
 
   public ElevatorSetPiston(boolean engageBrake) {
     this.engageBrake = engageBrake;
+    addRequirements(elevatorBrake);
   }
 
   @Override
   public void initialize() {
     log("Starting");
-    elevator.engageBrake(engageBrake);
+    elevatorBrake.engageBrake(engageBrake);
   }
 
   @Override
   public boolean isFinished() {
-    return elevator.getPiston() == engageBrake;
+    return elevatorBrake.getPiston() == engageBrake;
   }
 
   @Override

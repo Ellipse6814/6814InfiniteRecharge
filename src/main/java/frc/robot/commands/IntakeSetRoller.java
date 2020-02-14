@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeRoller;
 import frc.robot.subsystems.Logger;
 
 public class IntakeSetRoller extends CommandBase {
@@ -12,22 +12,23 @@ public class IntakeSetRoller extends CommandBase {
         logger.log("IntakeSetRoller", msg);
     }
 
-    private final Intake intake = Intake.getInstance();
+    private final IntakeRoller intakeRoller = IntakeRoller.getInstance();
     private double speed;
 
     public IntakeSetRoller(double speed) {
         this.speed = speed;
+        addRequirements(intakeRoller);
     }
 
     @Override
     public void initialize() {
         log("Starting");
-        intake.setRoller(speed);
+        intakeRoller.setRoller(speed);
     }
 
     @Override
     public void execute() {
-        intake.setRoller(speed);
+        intakeRoller.setRoller(speed);
     }
 
     @Override

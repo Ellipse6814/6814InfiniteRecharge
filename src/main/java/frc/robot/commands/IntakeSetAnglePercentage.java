@@ -1,29 +1,29 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeAngleMotor;
 import frc.robot.subsystems.Logger;
 
-public class IntakeSetPercentage extends CommandBase {
+public class IntakeSetAnglePercentage extends CommandBase {
 
     private Logger logger = Logger.getInstance();
 
     private void log(Object msg) {
-        logger.log("IntakeSetPercentage", msg);
+        logger.log("IntakeSetAnglePercentage", msg);
     }
 
-    private final Intake intake = Intake.getInstance();
+    private final IntakeAngleMotor intakeAngleMotor = IntakeAngleMotor.getInstance();
     private double speed;
 
-    public IntakeSetPercentage(double speed) {
+    public IntakeSetAnglePercentage(double speed) {
         this.speed = speed;
-        addRequirements(intake);
+        addRequirements(intakeAngleMotor);
     }
 
     @Override
     public void initialize() {
         log("Starting");
-        intake.setAngleMotorPercentage(speed);
+        intakeAngleMotor.setAngleMotorPercentage(speed);
     }
 
     @Override

@@ -5,8 +5,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
+import frc.robot.Util.Debugable;
 
-public class Drive extends SubsystemBase {
+public class Drive extends SubsystemBase implements Debugable {
 
     private Logger logger = Logger.getInstance();
 

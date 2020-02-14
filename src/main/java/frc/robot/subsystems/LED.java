@@ -5,8 +5,9 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
+import frc.robot.Util.Debugable;
 
-public class LED extends SubsystemBase {
+public class LED extends SubsystemBase implements Debugable {
 
   private Logger logger = Logger.getInstance();
 
@@ -95,6 +96,9 @@ public class LED extends SubsystemBase {
       spd = 0.93;
 
     return spd;
+  }
+
+  public void debug() {
   }
 }
 
