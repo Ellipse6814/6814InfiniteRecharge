@@ -1,7 +1,10 @@
 package frc.robot.subsystems;
 
+import java.util.Arrays;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.controller.ElevatorFeedforward;
@@ -9,8 +12,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
 import frc.robot.Util.Debugable;
+import frc.robot.Util.TalonHelper;
 
-public class ElevatorMotor extends SubsystemBase implements Debugable{
+public class ElevatorMotor extends SubsystemBase implements Debugable {
 
     private Logger logger = Logger.getInstance();
 
@@ -27,7 +31,7 @@ public class ElevatorMotor extends SubsystemBase implements Debugable{
     }
 
     private final int pidIdx = 0;
-    public final TalonSRX motor = new TalonSRX(Const.kElevatorMotorPort);
+    public final TalonSRX masterMotor, slaveMotor1, slaveMotor2;
 
     private ElevatorFeedforward elevatorFeedforward = new ElevatorFeedforward(Const.kElevatorkS, Const.kElevatorkG,
             Const.kElevatorkV, Const.kElevatorkA);
@@ -35,6 +39,25 @@ public class ElevatorMotor extends SubsystemBase implements Debugable{
     private double positionState;
 
     private ElevatorMotor() {
+        masterMotor = TalonHelper.createTalon(Const.kElevatorMotorPort, Const.kElevatorInverted);
+        slaveMotor1 = TalonHelper.createSlaveTalon(Const.kElevatorMotorSlavePort1, masterMotor);
+        slaveMotor2 = TalonHelper.createSlaveTalon(Const.kElevatorMotorSlavePort2, masterMotor);
+
+        TalonHelper.configMagEncoder(masterMotor, Const.kElevatorSensorInverted);
+
+        TalonHelper.configPID(masterMotor, pidIdx, Const.kElevatorkP, Const.kElevatorkI, Const.kElevatorkD, 0, 0);
+        TalonHelper.configMotionMagic(masterMotor, Const.kElevatorMaxVel, Const.kElevatorMaxAcc);
+
+        TalonHelper.configNeutralMode(Arrays.asList(masterMotor, slaveMotor1, slaveMotor2), NeutralMode.Brake);
+
+        TalonHelper.configDeadband(masterMotor, Const.kMotorDeadband);
+        TalonHelper.configDeadband(slaveMotor1, Const.kMotorDeadband);
+        TalonHelper.configDeadband(slaveMotor2, Const.kMotorDeadband);
+
+        TalonHelper.configCurrentLimit(masterMotor, Const.kElevatorCurrentLimit);
+        TalonHelper.configCurrentLimit(slaveMotor1, Const.kElevatorCurrentLimit);
+        TalonHelper.configCurrentLimit(slaveMotor2, Const.kElevatorCurrentLimit);
+
         log("Init");
     }
 
@@ -42,13 +65,13 @@ public class ElevatorMotor extends SubsystemBase implements Debugable{
         if (position == positionState)
             return;
         positionState = position;
-        motor.set(ControlMode.MotionMagic, position * Const.kDeg2Rot * Const.kRot2TalonRaw,
+        masterMotor.set(ControlMode.MotionMagic, position * Const.kDeg2Rot * Const.kRot2TalonRaw,
                 DemandType.ArbitraryFeedForward, getFeedForward()); // TODO: units!!
         log("setSetpoint: " + position + "degs");
     }
 
     public void setSpeed(double speed) {
-        motor.set(ControlMode.PercentOutput, speed);
+        masterMotor.set(ControlMode.PercentOutput, speed);
     }
 
     public double getFeedForward() {
@@ -57,15 +80,17 @@ public class ElevatorMotor extends SubsystemBase implements Debugable{
 
     public void resetEncoder(double resetToDeg) {
         int intVal = (int) (resetToDeg * Const.kDeg2Rot * Const.kRot2TalonRaw);
-        motor.setSelectedSensorPosition(intVal, pidIdx, 30);// TODO: put this in TalonHelper
+        masterMotor.setSelectedSensorPosition(intVal, pidIdx, 30);// TODO: put this in TalonHelper
     }
 
     public double getEncoderPosition() {
-        return motor.getSelectedSensorPosition() * Const.kTalonRaw2Rot * Const.kRot2Deg;
+        return masterMotor.getSelectedSensorPosition() * Const.kTalonRaw2Rot * Const.kElevatorGearRatio
+                * Const.kRot2Deg;
     }
 
     public double getEncoderVelocity() {
-        return motor.getSelectedSensorVelocity() * Const.kTalon100Ms2sec * Const.kTalonRaw2Rot * Const.kRot2Deg;
+        return masterMotor.getSelectedSensorVelocity() * Const.kTalon100Ms2sec * Const.kTalonRaw2Rot
+                * Const.kElevatorGearRatio * Const.kRot2Deg;
     }
 
     public boolean onTarget() {
@@ -74,6 +99,7 @@ public class ElevatorMotor extends SubsystemBase implements Debugable{
     }
 
     public void debug() {
-        SmartDashboard.putNumber("Setpoint", motor.getClosedLoopTarget() * Const.kDeg2Rot * Const.kRot2TalonRaw);
+        SmartDashboard.putNumber("Setpoint",
+                masterMotor.getClosedLoopTarget() * Const.kDeg2Rot * Const.kElevatorGearRatio * Const.kRot2TalonRaw);
     }
 }

@@ -56,6 +56,10 @@ public class TableMotor extends SubsystemBase implements Debugable {
         log("Init");
     }
 
+    public void setSpeed(double speed) {
+        motor.set(ControlMode.PercentOutput, speed);
+    }
+
     public boolean getDeltaEdge() {
         return tableColorDetector.hasNewState();
     }

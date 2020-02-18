@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
 import frc.robot.Util.Debugable;
 
-public class LED extends SubsystemBase implements Debugable {
+public class LED implements Debugable {
 
   private Logger logger = Logger.getInstance();
 
@@ -30,41 +30,28 @@ public class LED extends SubsystemBase implements Debugable {
   private double phaseShift;
 
   private LED() {
-    phaseShift = Timer.getFPGATimestamp();
-    set(LEDState.Disconnected);
+    set(LEDState.Idle);
+    log("Init");
   }
 
-  @Override
   public void periodic() {
     updateLEDs();
   }
 
-  @Deprecated
   public void set(LEDState state) {
     this.state = state;
+    phaseShift = Timer.getFPGATimestamp();
   }
 
   private void updateLEDs() {
     LEDColor wantedColor = LEDColor.Off;
 
-    // if (state == LEDState.Disconnected)
-    // wantedColor = ((Timer.getFPGATimestamp()-phaseShift) % 1 > 0.5) ?
-    // LEDColor.Off :
-    // LEDColor.Yellow;
-    // else if (state == LEDState.Normal)
-    // wantedColor = ((Timer.getFPGATimestamp()-phaseShift) % 1 > 0.5) ?
-    // LEDColor.Off :
-    // LEDColor.Green;
-    // else if (state == LEDState.PrepOut)
-    // wantedColor = LEDColor.Yellow;
-    // else if (state == LEDState.DoneOut)
-    // wantedColor = LEDColor.Aqua;
-    // else if (state == LEDState.Danger)
-    // wantedColor = LEDColor.Red;
-    // else if (state == LEDState.WaitingReset)
-    // wantedColor = ((Timer.getFPGATimestamp()-phaseShift) % 1 > 0.5) ?
-    // LEDColor.Off :
-    // LEDColor.Red;
+    if (state == LEDState.Normal)
+      wantedColor = ((Timer.getFPGATimestamp() - phaseShift) % 1.4 < 0.7) ? LEDColor.Green : LEDColor.Off;
+    else if (state == LEDState.Working)
+      wantedColor = ((Timer.getFPGATimestamp() - phaseShift) % 1.4 < 0.7) ? LEDColor.Red : LEDColor.Off;
+    else if (state == LEDState.Idle)
+      wantedColor = ((Timer.getFPGATimestamp() - phaseShift) % 1.4 < 0.7) ? LEDColor.Yellow : LEDColor.Off;
 
     led.set(calcLEDSpd(wantedColor));
   }
@@ -100,12 +87,12 @@ public class LED extends SubsystemBase implements Debugable {
 
   public void debug() {
   }
-}
 
-enum LEDColor {
-  Green, Yellow, White, Violet, Off, ColorGradient2, ColorBlend1, Aqua, Red, Pink
-}
+  private enum LEDColor {
+    Green, Yellow, White, Violet, Off, ColorGradient2, ColorBlend1, Aqua, Red, Pink
+  }
 
-enum LEDState {
-  Off, Normal, Disconnected, DisconnectedNotReady
+  public enum LEDState {
+    Off, Normal, Working, Idle
+  }
 }

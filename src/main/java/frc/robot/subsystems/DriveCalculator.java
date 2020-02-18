@@ -38,7 +38,7 @@ public class DriveCalculator {
     }
 
     private double applyDeadband(double value) {
-        if (Math.abs(value) > Const.kDriveJoystickDeadband)
+        if (Math.abs(value) > Const.kMotorDeadband)
             return value;
         return 0;
     }

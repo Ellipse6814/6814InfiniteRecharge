@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.AlternateEncoderType;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -24,17 +27,33 @@ public class Drive extends SubsystemBase implements Debugable {
         return instance;
     }
 
-    private CANSparkMax leftMaster = new CANSparkMax(Const.kDriveLeftMotorPort, MotorType.kBrushless);
-    private CANSparkMax leftSlave1 = new CANSparkMax(Const.kDriveLeftMotorPort1, MotorType.kBrushless);
-    private CANSparkMax leftSlave2 = new CANSparkMax(Const.kDriveLeftMotorPort2, MotorType.kBrushless);
+    private CANSparkMax leftMaster, leftSlave1, leftSlave2;
+    private CANSparkMax rightMaster, rightSlave1, rightSlave2;
 
-    private CANSparkMax rightMaster = new CANSparkMax(Const.kDriveRightMotorPort, MotorType.kBrushless);
-    private CANSparkMax rightSlave1 = new CANSparkMax(Const.kDriveRightMotorPort1, MotorType.kBrushless);
-    private CANSparkMax rightSlave2 = new CANSparkMax(Const.kDriveRightMotorPort2, MotorType.kBrushless);
+    private CANEncoder leftEncoder;
+    private CANEncoder rightEncoder;
+
+    private CANPIDController leftPID;
+    private CANPIDController rightPID;
 
     private int gear;
 
     private Drive() {
+        leftMaster = new CANSparkMax(Const.kDriveLeftMotorPort, MotorType.kBrushless);
+        leftSlave1 = new CANSparkMax(Const.kDriveLeftMotorPort1, MotorType.kBrushless);
+        leftSlave2 = new CANSparkMax(Const.kDriveLeftMotorPort2, MotorType.kBrushless);
+
+        rightMaster = new CANSparkMax(Const.kDriveRightMotorPort, MotorType.kBrushless);
+        rightSlave1 = new CANSparkMax(Const.kDriveRightMotorPort1, MotorType.kBrushless);
+        rightSlave2 = new CANSparkMax(Const.kDriveRightMotorPort2, MotorType.kBrushless);
+
+        leftMaster.restoreFactoryDefaults();
+        leftSlave1.restoreFactoryDefaults();
+        leftSlave2.restoreFactoryDefaults();
+        rightMaster.restoreFactoryDefaults();
+        rightSlave1.restoreFactoryDefaults();
+        rightSlave2.restoreFactoryDefaults();
+
         leftSlave1.follow(leftMaster);
         leftSlave2.follow(leftMaster);
         rightSlave1.follow(rightMaster);
@@ -42,6 +61,18 @@ public class Drive extends SubsystemBase implements Debugable {
 
         leftMaster.setInverted(Const.kLeftDriveInverted);
         rightMaster.setInverted(Const.kRightDriveInverted);
+
+        leftEncoder = leftMaster.getAlternateEncoder(AlternateEncoderType.kQuadrature, 4096);
+        rightEncoder = rightMaster.getAlternateEncoder(AlternateEncoderType.kQuadrature, 4096);
+
+        leftEncoder.setInverted(Const.kLeftDriveInverted);
+        rightEncoder.setInverted(Const.kRightDriveInverted);
+
+        leftPID = leftMaster.getPIDController();
+        rightPID = rightMaster.getPIDController();
+
+        leftPID.setFeedbackDevice(leftEncoder);
+        rightPID.setFeedbackDevice(rightEncoder);
 
         log("Inited");
     }
@@ -69,9 +100,20 @@ public class Drive extends SubsystemBase implements Debugable {
         return gear;
     }
 
-    @Override
-    public void periodic() {
+    public double getLeftPosition() {
+        return leftEncoder.getPosition() * Const.kDriveWheelDiameter;
+    }
 
+    public double getRightPosition() {
+        return rightEncoder.getPosition() * Const.kDriveWheelDiameter;
+    }
+
+    public double getLeftVelocity() {
+        return leftEncoder.getVelocity() * Const.kDriveWheelDiameter * Const.kMin2Sec;
+    }
+
+    public double getRightVelocity() {
+        return rightEncoder.getVelocity() * Const.kDriveWheelDiameter * Const.kMin2Sec;
     }
 
     public void debug() {
