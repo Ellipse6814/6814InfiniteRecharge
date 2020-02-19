@@ -87,12 +87,12 @@ public class ElevatorMotor extends SubsystemBase implements Debugable {
     }
 
     public double getFeedForward() {
-        return elevatorFeedforward.calculate(getEncoderVelocity());// TODO: this needs to be m/s
+        return elevatorFeedforward.calculate(getEncoderVelocity());
     }
 
     public void resetEncoder(double resetToDeg) {
         int intVal = (int) (resetToDeg * Const.kDeg2Rot * Const.kRot2TalonRaw);
-        masterMotor.setSelectedSensorPosition(intVal, pidIdx, 30);// TODO: put this in TalonHelper
+        TalonHelper.resetEncoder(masterMotor, pidIdx, intVal);
         updateSafety();
     }
 

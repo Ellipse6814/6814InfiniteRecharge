@@ -12,6 +12,9 @@ public class DoNothing extends CommandBase {
         logger.log("DoNothing", msg);
     }
 
+    public DoNothing() {
+    }
+
     public DoNothing(SubsystemBase subsystem) {
         addRequirements(subsystem);
     }

@@ -15,7 +15,8 @@ public class ElevatorGoto extends SequentialCommandGroup {
         addCommands(//
                 new ElevatorSetPiston(false), //
                 new ElevatorSetPosition(position), //
-                new ElevatorSetPiston(brake)//
+                new ElevatorSetPiston(brake), //
+                new ElevatorSetPercentage(0)//
         );
     }
 

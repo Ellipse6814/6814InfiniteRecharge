@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
 import frc.robot.Util.Debugable;
+import frc.robot.Util.TalonHelper;
 import frc.robot.subsystems.TableColorDetector.TableColor;
 
 public class TableMotor extends SubsystemBase implements Debugable {
@@ -104,8 +105,9 @@ public class TableMotor extends SubsystemBase implements Debugable {
 
     public void resetEncoder(double resetToDeg) {
         int intVal = (int) (resetToDeg * Const.kDeg2Rot * Const.kRot2TalonRaw);
+        TalonHelper.resetEncoder(motor, pidIdx, intVal);
         // log("Should reset encoder to: " + intVal);
-        motor.setSelectedSensorPosition(intVal, pidIdx, 30);
+        // motor.setSelectedSensorPosition(intVal, pidIdx, 30);
         // log(errorVal.toString());
         // log("Encoder actually reset to: " +
         // motor.getSelectedSensorPosition());

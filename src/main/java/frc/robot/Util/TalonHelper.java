@@ -137,4 +137,8 @@ public class TalonHelper {
         talon.configMotionAcceleration((int) (maxAccRotPerSec2 * Const.kRot2TalonRaw * Const.kSec2Talon100Ms),
                 kCommTimeout);
     }
+
+    public static void resetEncoder(TalonSRX talon, int pidIdx, int rawUnits) {
+        talon.setSelectedSensorPosition(rawUnits, pidIdx, kCommTimeout);
+    }
 }

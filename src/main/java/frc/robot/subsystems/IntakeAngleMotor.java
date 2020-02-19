@@ -87,7 +87,7 @@ public class IntakeAngleMotor extends SubsystemBase implements Debugable {
 
     public void resetEncoder(double resetToDeg) {
         int intVal = (int) (resetToDeg * Const.kDeg2Rot * Const.kRot2TalonRaw);
-        motor.setSelectedSensorPosition(intVal, 0, 30);
+        TalonHelper.resetEncoder(motor, pidIdx, intVal);
     }
 
     private void updateSafety() {
