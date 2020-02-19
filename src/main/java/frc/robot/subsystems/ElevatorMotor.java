@@ -38,7 +38,6 @@ public class ElevatorMotor extends SubsystemBase implements Debugable {
 
     private ElevatorFeedforward elevatorFeedforward = new ElevatorFeedforward(Const.kElevatorkS, Const.kElevatorkG,
             Const.kElevatorkV, Const.kElevatorkA);
-    private LED led = LED.getInstance();
 
     private double positionState;
     private boolean safe;
