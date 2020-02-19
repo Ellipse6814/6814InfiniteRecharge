@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
 import frc.robot.Util.Debugable;
+import frc.robot.subsystems.LED.LEDState;
 
 public class ElevatorBrake extends SubsystemBase implements Debugable {
 
@@ -25,6 +26,8 @@ public class ElevatorBrake extends SubsystemBase implements Debugable {
 
     private final DoubleSolenoid piston;
     public final DigitalInput releaseLimitSwitch = new DigitalInput(Const.kIntakeLimitSwitchPort);
+
+    private final LED led = LED.getInstance();
 
     private boolean pistonState;
     private double pistonStateValidAfter;
@@ -54,6 +57,12 @@ public class ElevatorBrake extends SubsystemBase implements Debugable {
 
     public boolean getReleaseLimitSwitch() {
         return releaseLimitSwitch.get();
+    }
+
+    public void checkReleaseButton() {
+        if (getReleaseLimitSwitch()) {
+            engageBrake(false);
+        }
     }
 
     public void debug() {

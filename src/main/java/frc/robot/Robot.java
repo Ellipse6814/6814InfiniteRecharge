@@ -62,7 +62,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void disabledInit() {
-        robotContainer.led.set(LED.LEDState.Idle);
+        robotContainer.led.require(LED.LEDState.Yellow);
         Logger.getInstance().flush();
     }
 
@@ -71,10 +71,7 @@ public class Robot extends TimedRobot {
         // robot secretly operating in disabled mode..... Nobody is watching.....
         // Oh no! You saw this comment!!! Ahhhhhhhhhhhhhhh! --Sean Sun '21
 
-        if (robotContainer.elevatorBrake.getReleaseLimitSwitch()) {
-            robotContainer.elevatorBrake.engageBrake(false);
-            robotContainer.led.set(LEDState.Working);
-        }
+        robotContainer.elevatorBrake.checkReleaseButton();
 
     }
 
@@ -84,7 +81,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        robotContainer.led.set(LED.LEDState.Normal);
+        robotContainer.led.clearRequire(LED.LEDState.Yellow);
         m_autonomousCommand = robotContainer.getAutonomousCommand();
 
         // schedule the autonomous command (example)
@@ -102,7 +99,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        robotContainer.led.set(LED.LEDState.Normal);
+        robotContainer.led.clearRequire(LED.LEDState.Yellow);
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
@@ -121,7 +118,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testInit() {
-        robotContainer.led.set(LED.LEDState.Normal);
+        robotContainer.led.clearRequire(LED.LEDState.Yellow);
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
     }

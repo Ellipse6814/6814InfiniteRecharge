@@ -172,5 +172,7 @@ public class Const {
 
     // _LED
     public static final int kLEDPort = -1;
+    public static final double kLEDPeriod = 1.4;
+    public static final double kLEDHalfPeriod = kLEDPeriod / 2;
 
 }

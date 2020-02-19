@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
 import frc.robot.Util.Debugable;
 import frc.robot.Util.TalonHelper;
+import frc.robot.subsystems.LED.LEDState;
 
 public class IntakeAngleMotor extends SubsystemBase implements Debugable {
 
@@ -35,10 +36,15 @@ public class IntakeAngleMotor extends SubsystemBase implements Debugable {
 
     private final ArmFeedforward armFeedforward = new ArmFeedforward(Const.kIntakekS, Const.kIntakekCos,
             Const.kIntakekV, Const.kIntakekA);
+    private final LED led = LED.getInstance();
 
     private double angleState;
+    private boolean safe;
 
     private IntakeAngleMotor() {
+        safe = false;
+        led.require(LEDState.Red);
+
         motor = TalonHelper.createTalon(Const.kIntakeAngleMotorPort, Const.kIntakeAngleMotorInverted);
 
         TalonHelper.configMagEncoder(motor, Const.kIntakeAngleMotorSensorInverted);
@@ -77,6 +83,14 @@ public class IntakeAngleMotor extends SubsystemBase implements Debugable {
     public void resetEncoder(double resetToDeg) {
         int intVal = (int) (resetToDeg * Const.kDeg2Rot * Const.kRot2TalonRaw);
         motor.setSelectedSensorPosition(intVal, 0, 30);
+        updateSafety();
+    }
+
+    private void updateSafety() {
+        if (safe == false) {
+            led.clearRequire(LEDState.Red);
+            safe = true;
+        }
     }
 
     public double getEncoderPosition() {

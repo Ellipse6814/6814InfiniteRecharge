@@ -8,90 +8,116 @@ import frc.robot.Util.Debugable;
 
 public class LED implements Debugable {
 
-  private Logger logger = Logger.getInstance();
+    private Logger logger = Logger.getInstance();
 
-  private void log(Object msg) {
-    logger.log("LED", msg);
-  }
-
-  private static LED instance;
-
-  public static LED getInstance() {
-    if (instance == null) {
-      instance = new LED();
+    private void log(Object msg) {
+        logger.log("LED", msg);
     }
-    return instance;
-  }
 
-  private SpeedController led = new Spark(Const.kLEDPort);
-  private LEDState state;
+    private static LED instance;
 
-  private double phaseShift;
+    public static LED getInstance() {
+        if (instance == null) {
+            instance = new LED();
+        }
+        return instance;
+    }
 
-  private LED() {
-    set(LEDState.Idle);
-    log("Init");
-  }
+    private SpeedController led = new Spark(Const.kLEDPort);
 
-  public void periodic() {
-    updateLEDs();
-  }
+    private double phaseShift;
 
-  public void set(LEDState state) {
-    this.state = state;
-    phaseShift = Timer.getFPGATimestamp();
-  }
+    private int requireWorking, requireIdle;
+    private LEDState state;
 
-  private void updateLEDs() {
-    LEDColor wantedColor = LEDColor.Off;
+    private LED() {
+        require(LEDState.Yellow);
+        log("Init");
+    }
 
-    if (state == LEDState.Normal)
-      wantedColor = ((Timer.getFPGATimestamp() - phaseShift) % 1.4 < 0.7) ? LEDColor.Green : LEDColor.Off;
-    else if (state == LEDState.Working)
-      wantedColor = ((Timer.getFPGATimestamp() - phaseShift) % 1.4 < 0.7) ? LEDColor.Red : LEDColor.Off;
-    else if (state == LEDState.Idle)
-      wantedColor = ((Timer.getFPGATimestamp() - phaseShift) % 1.4 < 0.7) ? LEDColor.Yellow : LEDColor.Off;
+    public void periodic() {
+        updateLEDs();
+    }
 
-    led.set(calcLEDSpd(wantedColor));
-  }
+    public void require(LEDState state) {
+        changeRequire(state, 1);
+    }
 
-  private double calcLEDSpd(LEDColor state) {
+    public void clearRequire(LEDState state) {
+        changeRequire(state, -1);
+    }
 
-    double spd;
-    if (state == LEDColor.Green)
-      spd = 0.75;
-    else if (state == LEDColor.White)
-      spd = 0.93;
-    else if (state == LEDColor.Yellow)
-      spd = 0.69;
-    else if (state == LEDColor.Violet)
-      spd = 0.91;
-    else if (state == LEDColor.Off)
-      spd = 0.99;
-    else if (state == LEDColor.ColorGradient2)
-      spd = 0.41;
-    else if (state == LEDColor.ColorBlend1)
-      spd = -0.03;
-    else if (state == LEDColor.Aqua)
-      spd = 0.81;
-    else if (state == LEDColor.Red)
-      spd = 0.61;
-    else if (state == LEDColor.Pink)
-      spd = 0.59;
-    else
-      spd = 0.93;
+    private void changeRequire(LEDState state, int change) {
+        if (state == LEDState.Red)
+            requireWorking += change;
+        else if (state == LEDState.Yellow)
+            requireIdle += change;
 
-    return spd;
-  }
+        if (requireWorking > 0)
+            state = LEDState.Red;
+        else if (requireIdle > 0)
+            state = LEDState.Yellow;
+        else
+            state = LEDState.Green;
 
-  public void debug() {
-  }
+        phaseShift = Timer.getFPGATimestamp();
+    }
 
-  private enum LEDColor {
-    Green, Yellow, White, Violet, Off, ColorGradient2, ColorBlend1, Aqua, Red, Pink
-  }
+    private void updateLEDs() {
+        LEDColor wantedColor = LEDColor.Off;
+        if (state == LEDState.Green)
+            wantedColor = ((Timer.getFPGATimestamp() - phaseShift) % Const.kLEDPeriod < Const.kLEDHalfPeriod)
+                    ? LEDColor.Green
+                    : LEDColor.Off;
+        else if (state == LEDState.Red)
+            wantedColor = ((Timer.getFPGATimestamp() - phaseShift) % Const.kLEDPeriod < Const.kLEDHalfPeriod)
+                    ? LEDColor.Red
+                    : LEDColor.Off;
+        else if (state == LEDState.Yellow)
+            wantedColor = ((Timer.getFPGATimestamp() - phaseShift) % Const.kLEDPeriod < Const.kLEDHalfPeriod)
+                    ? LEDColor.Yellow
+                    : LEDColor.Off;
 
-  public enum LEDState {
-    Off, Normal, Working, Idle
-  }
+        led.set(calcLEDSpd(wantedColor));
+    }
+
+    private double calcLEDSpd(LEDColor state) {
+
+        double spd;
+        if (state == LEDColor.Green)
+            spd = 0.75;
+        else if (state == LEDColor.White)
+            spd = 0.93;
+        else if (state == LEDColor.Yellow)
+            spd = 0.69;
+        else if (state == LEDColor.Violet)
+            spd = 0.91;
+        else if (state == LEDColor.Off)
+            spd = 0.99;
+        else if (state == LEDColor.ColorGradient2)
+            spd = 0.41;
+        else if (state == LEDColor.ColorBlend1)
+            spd = -0.03;
+        else if (state == LEDColor.Aqua)
+            spd = 0.81;
+        else if (state == LEDColor.Red)
+            spd = 0.61;
+        else if (state == LEDColor.Pink)
+            spd = 0.59;
+        else
+            spd = 0.93;
+
+        return spd;
+    }
+
+    public void debug() {
+    }
+
+    private enum LEDColor {
+        Green, Yellow, White, Violet, Off, ColorGradient2, ColorBlend1, Aqua, Red, Pink
+    }
+
+    public enum LEDState {
+        Off, Green, Red, Yellow
+    }
 }
