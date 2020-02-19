@@ -68,6 +68,11 @@ public class IntakeAngleMotor extends SubsystemBase implements Debugable {
     }
 
     public void setAngle(double degs) {
+        if (!safe) {
+            log("NOT SAFE, NOT SETTING POSITION");
+            return;
+        }
+
         if (degs == angleState)
             return;
         angleState = degs;
@@ -83,7 +88,6 @@ public class IntakeAngleMotor extends SubsystemBase implements Debugable {
     public void resetEncoder(double resetToDeg) {
         int intVal = (int) (resetToDeg * Const.kDeg2Rot * Const.kRot2TalonRaw);
         motor.setSelectedSensorPosition(intVal, 0, 30);
-        updateSafety();
     }
 
     private void updateSafety() {
@@ -113,6 +117,15 @@ public class IntakeAngleMotor extends SubsystemBase implements Debugable {
 
     public boolean getResetLimitSwitch() {
         return resetLimitSwitch.get();
+    }
+
+    public boolean tryToLimitSwitchReset() {
+        if (getResetLimitSwitch()) {
+            resetEncoder(Const.kIntakeLimitSwitchEncoderPosition);
+            updateSafety();
+            return true;
+        }
+        return false;
     }
 
     public void debug() {

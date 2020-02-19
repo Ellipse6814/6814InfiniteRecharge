@@ -34,11 +34,10 @@ public class IntakeReset extends CommandBase {
 
     @Override
     public void execute() {
-        if (!intakeMotor.getResetLimitSwitch()) {
+        if (!intakeMotor.tryToLimitSwitchReset()) {
             intakeMotor.setSpeed(Const.kIntakeResetSpeed);
         } else {
             intakeMotor.setSpeed(0);
-            intakeMotor.resetEncoder(Const.kIntakeLimitSwitchEncoderPosition);
             isFinished = true;
         }
     }

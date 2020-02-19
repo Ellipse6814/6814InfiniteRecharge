@@ -25,6 +25,11 @@ public class ElevatorReset extends CommandBase {
         log("Starting");
         isFinished = false;
         elevatorMotor.setSpeed(Const.kElevatorResetSpeed);
+
+        if (elevatorMotor.getSafe()) {
+            isFinished = true;
+            log("Already safe and reset, finishing ElevatorReset");
+        }
     }
 
     @Override

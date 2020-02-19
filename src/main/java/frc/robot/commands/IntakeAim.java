@@ -15,7 +15,7 @@ public class IntakeAim extends SequentialCommandGroup {
     private Logger logger = Logger.getInstance();
 
     private void log(Object msg) {
-        logger.log("IntakeGround", msg);
+        logger.log("IntakeAim", msg);
     }
 
     @Override

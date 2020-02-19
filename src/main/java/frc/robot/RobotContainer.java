@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -48,7 +49,7 @@ public class RobotContainer {
         configureButtonBindings();
         // JoystickButton button = new JoystickButton(driverJoy, 1);
         // button.whenPressed(command)
-        robotStartInitSequence();
+        robotInitSequence();
         log("Inited");
     }
 
@@ -59,6 +60,42 @@ public class RobotContainer {
      * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
+
+        // Elevator button
+        new JoystickButton(operatorJoy, -1)//
+                .whenPressed(new ElevatorGoto(Const.kElevatorTopPos, false))//
+                .whenReleased(new ElevatorGoto(Const.kElevatorBottomPos, true));
+
+        // Intake hide
+        new JoystickButton(operatorJoy, -2)//
+                .whenPressed(new IntakeHide());
+
+        // Intake ground
+        new JoystickButton(operatorJoy, -2)//
+                .whenPressed(new IntakeGround());
+
+        // Intake aim
+        new JoystickButton(operatorJoy, -2)//
+                .whenPressed(new IntakeAim());
+
+        // Intake in
+        new JoystickButton(operatorJoy, -2)//
+                .whenHeld(new IntakeSetRoller(Const.kIntakeInSpd));
+
+        // Intake out
+        new JoystickButton(operatorJoy, -2)//
+                .whenHeld(new IntakeSetRoller(Const.kIntakeOutSpd));
+
+        // Table: Do rotation
+        new JoystickButton(operatorJoy, -2)//
+                .whenHeld(new TableDoTable(false));
+
+        // Table: Do color
+        new JoystickButton(operatorJoy, -2)//
+                .whenHeld(new TableDoTable(true));
+
+        //
+        // DEFAULT COMMANDS
         drive.setDefaultCommand(new DriveTeleOp(() -> driverJoy.getRawAxis(1), () -> driverJoy.getRawAxis(4)));
 
         intakeAngleMotor.setDefaultCommand(new DoNothing(intakeAngleMotor));
@@ -72,11 +109,10 @@ public class RobotContainer {
         tablePiston.setDefaultCommand(new DoNothing(tablePiston));
     }
 
-    public void robotStartInitSequence() {
-        new Seq(new Command[] { new ElevatorResetSequence(), new ElevatorGoto(0, true) }).schedule();
+    public void robotInitSequence() {
+        new ElevatorResetSequence().schedule();
         new IntakeHide().schedule();
-        new TableEngage(false).schedule();
-        new TableSetMotor(0).schedule();
+        new TableHide().schedule();
     }
 
     public Command getAutonomousCommand() {

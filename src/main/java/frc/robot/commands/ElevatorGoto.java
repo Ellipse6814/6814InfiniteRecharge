@@ -13,7 +13,6 @@ public class ElevatorGoto extends SequentialCommandGroup {
         this.brake = brake;
         this.position = position;
         addCommands(//
-                new ElevatorReset(), //
                 new ElevatorSetPiston(false), //
                 new ElevatorSetPosition(position), //
                 new ElevatorSetPiston(brake)//
@@ -40,7 +39,7 @@ public class ElevatorGoto extends SequentialCommandGroup {
             log("already on target, not even going to move the motors nor release the brakes");
             return;
         }
-        
+
         skipCommand = false;
         super.initialize();
     }

@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.subsystems.ElevatorMotor;
 import frc.robot.subsystems.Logger;
 
 public class ElevatorResetSequence extends SequentialCommandGroup {
@@ -11,6 +10,7 @@ public class ElevatorResetSequence extends SequentialCommandGroup {
         addCommands(//
                 new ElevatorSetPiston(false), //
                 new ElevatorReset(), //
+                new ElevatorGoto(0, false), //
                 new ElevatorSetPiston(true)//
         );
     }
@@ -21,25 +21,14 @@ public class ElevatorResetSequence extends SequentialCommandGroup {
         logger.log("ElevatorResetSequence", msg);
     }
 
-    private ElevatorMotor elevatorMotor = ElevatorMotor.getInstance();
-    private boolean skipCommand;
-
     @Override
     public void initialize() {
         log("Starting");
-
-        if (elevatorMotor.getSafe()) {
-            skipCommand = true;
-            log("Already safe and reset, exiting ElevatorResetSequence");
-            return;
-        }
-
-        skipCommand = false;
         super.initialize();
     }
 
     @Override
     public boolean isFinished() {
-        return skipCommand || super.isFinished();
+        return super.isFinished();
     }
 }

@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
 import frc.robot.Util.Debugable;
 import frc.robot.Util.TalonHelper;
-import frc.robot.subsystems.LED.LEDState;
+import frc.robot.commands.ElevatorResetSequence;
 
 public class ElevatorMotor extends SubsystemBase implements Debugable {
 
@@ -45,7 +45,6 @@ public class ElevatorMotor extends SubsystemBase implements Debugable {
 
     private ElevatorMotor() {
         safe = false;
-        led.require(LEDState.Red);
 
         masterMotor = TalonHelper.createTalon(Const.kElevatorMotorPort, Const.kElevatorInverted);
         slaveMotor1 = TalonHelper.createSlaveTalon(Const.kElevatorMotorSlavePort1, masterMotor);
@@ -70,6 +69,12 @@ public class ElevatorMotor extends SubsystemBase implements Debugable {
     }
 
     public void setPosition(double position) {
+        if (!safe) {
+            new ElevatorResetSequence().schedule();
+            log("NOT SAFE, not setting setpoint, trying to start the elevator reset command");
+            return;
+        }
+
         if (position == positionState)
             return;
         positionState = position;
@@ -94,12 +99,11 @@ public class ElevatorMotor extends SubsystemBase implements Debugable {
 
     private void updateSafety() {
         if (safe == false) {
-            led.clearRequire(LEDState.Red);
             safe = true;
         }
     }
 
-    public boolean getSafe(){
+    public boolean getSafe() {
         return safe;
     }
 
