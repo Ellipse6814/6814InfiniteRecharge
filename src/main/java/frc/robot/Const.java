@@ -96,6 +96,9 @@ public class Const {
     public static final int kElevatorMotorPort = -2;
     public static final int kElevatorMotorSlavePort1 = -2;
     public static final int kElevatorMotorSlavePort2 = -2;
+    public static final int kElevatorLimitSwitchPort = -1;
+    public static final int kElevatorReleaseButtonPort = -1;
+
     public static final double kElevatorGearRatio = 1;
 
     public static final Value kElevatorEngagePistonPos = Value.kForward;// TODO:
@@ -104,6 +107,9 @@ public class Const {
     public static final boolean kElevatorInverted = false;// TODO:
     public static final boolean kElevatorSensorInverted = false;// TODO:
     public static final int kElevatorCurrentLimit = 40;
+
+    public static final double kElevatorResetSpeed = -0.1;
+    public static final double kElevatorLimitSwitchEncoderPosition = 0;
 
     public static final double kElevatorPistonMoveDelay = 1;
 
@@ -126,6 +132,7 @@ public class Const {
     // _intake
     public static final int kIntakeRollerMotorPort = -1;
     public static final int kIntakeAngleMotorPort = -1;
+    public static final int kIntakeLimitSwitchPort = -1;
 
     public static final boolean kIntakeAngleMotorInverted = false;
     public static final boolean kIntakeAngleMotorSensorInverted = false;
@@ -136,6 +143,9 @@ public class Const {
     public static final Value kIntakeEngagePistonPos = Value.kForward;
     public static final Value kIntakeNOTEngagePistonPos = Value.kReverse;
     public static final double kIntakePistonMoveDelay = 1;
+
+    public static final double kIntakeResetSpeed = -0.1;
+    public static final double kIntakeLimitSwitchEncoderPosition = 0;
 
     public static final double kIntakePositionTolerance = 1;
     public static final double kIntakeVelocityTolerance = 1;

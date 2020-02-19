@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.Logger;
+import frc.robot.subsystems.LED.LEDState;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -67,6 +68,14 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
+        // robot secretly operating in disabled mode..... Nobody is watching.....
+        // Oh no! You saw this comment!!! Ahhhhhhhhhhhhhhh! --Sean Sun '21
+
+        if (robotContainer.elevatorBrake.getReleaseLimitSwitch()) {
+            robotContainer.elevatorBrake.engageBrake(false);
+            robotContainer.led.set(LEDState.Working);
+        }
+
     }
 
     /**

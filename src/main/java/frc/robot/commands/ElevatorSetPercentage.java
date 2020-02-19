@@ -24,7 +24,6 @@ public class ElevatorSetPercentage extends CommandBase {
   public void initialize() {
     log("Starting");
     elevatorMotor.setSpeed(Speed);
-    ;
   }
 
   @Override

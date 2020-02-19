@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
 import frc.robot.Util.Debugable;
 
@@ -25,7 +24,7 @@ public class LED implements Debugable {
   }
 
   private SpeedController led = new Spark(Const.kLEDPort);
-  public LEDState state;
+  private LEDState state;
 
   private double phaseShift;
 

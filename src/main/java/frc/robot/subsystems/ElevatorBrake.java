@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,6 +24,7 @@ public class ElevatorBrake extends SubsystemBase implements Debugable {
     }
 
     private final DoubleSolenoid piston;
+    public final DigitalInput releaseLimitSwitch = new DigitalInput(Const.kIntakeLimitSwitchPort);
 
     private boolean pistonState;
     private double pistonStateValidAfter;
@@ -48,6 +50,10 @@ public class ElevatorBrake extends SubsystemBase implements Debugable {
 
         pistonState = engage;
         pistonStateValidAfter = Timer.getFPGATimestamp() + Const.kElevatorPistonMoveDelay;
+    }
+
+    public boolean getReleaseLimitSwitch() {
+        return releaseLimitSwitch.get();
     }
 
     public void debug() {

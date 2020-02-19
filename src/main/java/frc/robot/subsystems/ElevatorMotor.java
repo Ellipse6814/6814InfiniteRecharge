@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.controller.ElevatorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -32,6 +33,7 @@ public class ElevatorMotor extends SubsystemBase implements Debugable {
 
     private final int pidIdx = 0;
     public final TalonSRX masterMotor, slaveMotor1, slaveMotor2;
+    public final DigitalInput resetLimitSwitch = new DigitalInput(Const.kIntakeLimitSwitchPort);
 
     private ElevatorFeedforward elevatorFeedforward = new ElevatorFeedforward(Const.kElevatorkS, Const.kElevatorkG,
             Const.kElevatorkV, Const.kElevatorkA);
@@ -96,6 +98,10 @@ public class ElevatorMotor extends SubsystemBase implements Debugable {
     public boolean onTarget() {
         return Math.abs(getEncoderPosition() - positionState) <= Const.kElevatorPositionTolerance
                 && Math.abs(getEncoderVelocity()) <= Const.kElevatorVelocityTolerance;
+    }
+
+    public boolean getResetLimitSwitch() {
+        return resetLimitSwitch.get();
     }
 
     public void debug() {

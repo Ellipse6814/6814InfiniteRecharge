@@ -77,7 +77,6 @@ public class RobotContainer {
         new IntakeHide().schedule();
         new TableEngage(false).schedule();
         new TableSetMotor(0).schedule();
-
         led.set(LED.LEDState.Idle);
 
     }

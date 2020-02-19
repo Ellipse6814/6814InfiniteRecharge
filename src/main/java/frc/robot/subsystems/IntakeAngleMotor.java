@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -30,6 +31,7 @@ public class IntakeAngleMotor extends SubsystemBase implements Debugable {
 
     private final int pidIdx = 0;
     public final TalonSRX motor;
+    public final DigitalInput resetLimitSwitch = new DigitalInput(Const.kIntakeLimitSwitchPort);
 
     private final ArmFeedforward armFeedforward = new ArmFeedforward(Const.kIntakekS, Const.kIntakekCos,
             Const.kIntakekV, Const.kIntakekA);
@@ -55,7 +57,7 @@ public class IntakeAngleMotor extends SubsystemBase implements Debugable {
         log("Init");
     }
 
-    public void setAngleMotorPercentage(double speed) {
+    public void setSpeed(double speed) {
         motor.set(ControlMode.PercentOutput, speed);
     }
 
@@ -89,6 +91,10 @@ public class IntakeAngleMotor extends SubsystemBase implements Debugable {
     public boolean onTarget() {
         return Math.abs(getEncoderPosition() - angleState) <= Const.kIntakePositionTolerance
                 && Math.abs(getEncoderVelocity()) <= Const.kIntakeVelocityTolerance;
+    }
+
+    public boolean getResetLimitSwitch() {
+        return resetLimitSwitch.get();
     }
 
     public void debug() {

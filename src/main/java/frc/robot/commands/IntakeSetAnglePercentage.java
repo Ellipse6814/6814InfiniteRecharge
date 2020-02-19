@@ -23,7 +23,7 @@ public class IntakeSetAnglePercentage extends CommandBase {
     @Override
     public void initialize() {
         log("Starting");
-        intakeAngleMotor.setAngleMotorPercentage(speed);
+        intakeAngleMotor.setSpeed(speed);
     }
 
     @Override
