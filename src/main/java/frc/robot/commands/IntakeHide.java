@@ -27,5 +27,6 @@ public class IntakeHide extends SequentialCommandGroup {
     @Override
     public void initialize() {
         log("Starting");
+        super.initialize();
     }
 }

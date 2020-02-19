@@ -25,6 +25,11 @@ public class IntakeReset extends CommandBase {
         log("Starting");
         isFinished = false;
         intakeMotor.setSpeed(Const.kIntakeResetSpeed);
+
+        if (intakeMotor.getSafe()) {
+            isFinished = true;
+            log("Already reset and safe, skipping reset sequence");
+        }
     }
 
     @Override

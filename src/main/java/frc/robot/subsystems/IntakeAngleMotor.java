@@ -93,6 +93,10 @@ public class IntakeAngleMotor extends SubsystemBase implements Debugable {
         }
     }
 
+    public boolean getSafe() {
+        return safe;
+    }
+
     public double getEncoderPosition() {
         return motor.getSelectedSensorPosition() * Const.kTalonRaw2Rot * Const.kIntakeGearRatio * Const.kRot2Deg;
     }

@@ -4,26 +4,21 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.ElevatorMotor;
 import frc.robot.subsystems.Logger;
 
-public class ElevatorGoto extends SequentialCommandGroup {
+public class ElevatorResetSequence extends SequentialCommandGroup {
 
-    private boolean brake;
-    private double position;
+    public ElevatorResetSequence() {
 
-    public ElevatorGoto(double position, boolean brake) {
-        this.brake = brake;
-        this.position = position;
         addCommands(//
-                new ElevatorReset(), //
                 new ElevatorSetPiston(false), //
-                new ElevatorSetPosition(position), //
-                new ElevatorSetPiston(brake)//
+                new ElevatorReset(), //
+                new ElevatorSetPiston(true)//
         );
     }
 
     private Logger logger = Logger.getInstance();
 
     private void log(Object msg) {
-        logger.log("ElevatorGoto", msg);
+        logger.log("ElevatorResetSequence", msg);
     }
 
     private ElevatorMotor elevatorMotor = ElevatorMotor.getInstance();
@@ -32,15 +27,13 @@ public class ElevatorGoto extends SequentialCommandGroup {
     @Override
     public void initialize() {
         log("Starting");
-        log("Setpoint position = " + position);
-        log("Brake at end = " + brake);
 
-        if (elevatorMotor.onTarget()) {
+        if (elevatorMotor.getSafe()) {
             skipCommand = true;
-            log("already on target, not even going to move the motors nor release the brakes");
+            log("Already safe and reset, exiting ElevatorResetSequence");
             return;
         }
-        
+
         skipCommand = false;
         super.initialize();
     }

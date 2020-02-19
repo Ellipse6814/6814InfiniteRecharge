@@ -26,5 +26,6 @@ public class TableDoTable extends SequentialCommandGroup {
     public void initialize() {
         log("Starting");
         log("doColor = " + doColor);
+        super.initialize();
     }
 }

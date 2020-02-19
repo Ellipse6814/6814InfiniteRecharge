@@ -99,6 +99,10 @@ public class ElevatorMotor extends SubsystemBase implements Debugable {
         }
     }
 
+    public boolean getSafe(){
+        return safe;
+    }
+
     public double getEncoderPosition() {
         return masterMotor.getSelectedSensorPosition() * Const.kTalonRaw2Rot * Const.kElevatorGearRatio
                 * Const.kRot2Deg;

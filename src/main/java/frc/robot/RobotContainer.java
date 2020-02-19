@@ -72,13 +72,11 @@ public class RobotContainer {
         tablePiston.setDefaultCommand(new DoNothing(tablePiston));
     }
 
-    private void robotStartInitSequence() {
-        new ElevatorGoto(0, true).schedule();
+    public void robotStartInitSequence() {
+        new Seq(new Command[] { new ElevatorResetSequence(), new ElevatorGoto(0, true) }).schedule();
         new IntakeHide().schedule();
         new TableEngage(false).schedule();
         new TableSetMotor(0).schedule();
-        led.require(LED.LEDState.Yellow);
-
     }
 
     public Command getAutonomousCommand() {
