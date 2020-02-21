@@ -68,11 +68,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        // robot secretly operating in disabled mode..... Nobody is watching.....
-        // Oh no! You saw this comment!!! Ahhhhhhhhhhhhhhh! --Sean Sun '21
-
-        robotContainer.elevatorBrake.checkReleaseButton();
-
     }
 
     /**
@@ -82,7 +77,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         robotContainer.led.clearRequire(LED.LEDState.Yellow);
-        robotContainer.robotInitSequence();
+        // robotContainer.robotInitSequence();
         m_autonomousCommand = robotContainer.getAutonomousCommand();
 
         // schedule the autonomous command (example)
@@ -101,7 +96,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         robotContainer.led.clearRequire(LED.LEDState.Yellow);
-        robotContainer.robotInitSequence();
+        // robotContainer.robotInitSequence();
 
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to

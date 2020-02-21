@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.revrobotics.ColorMatch;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -93,18 +94,20 @@ public class Const {
     // _elevator
     public static final int kElevatorSolonoidPort1 = -2;
     public static final int kElevatorSolonoidPort2 = -3;
-    public static final int kElevatorMotorPort = -2;
-    public static final int kElevatorMotorSlavePort1 = -2;
-    public static final int kElevatorMotorSlavePort2 = -2;
+    public static final int kElevatorMotorPort = 3;
+    public static final int kElevatorMotorSlavePort1 = 5;
+    public static final int kElevatorMotorSlavePort2 = 6;
     public static final int kElevatorLimitSwitchPort = -1;
-    public static final int kElevatorReleaseButtonPort = -1;
 
-    public static final double kElevatorGearRatio = 1;
+    public static final double kElevatorGearRatio = 18.0 / 72 * 34 / 56;
+    public static final double kElevatorSprocketCircumference = 10.5;
 
     public static final Value kElevatorEngagePistonPos = Value.kForward;// TODO:
     public static final Value kElevatorNOTEngagePistonPos = Value.kReverse;
 
-    public static final boolean kElevatorInverted = false;// TODO:
+    public static final boolean kElevatorInverted = false;
+    public static final InvertType kElevatorSlave1Inverted = InvertType.OpposeMaster;
+    public static final InvertType kElevatorSlave2Inverted = InvertType.FollowMaster;
     public static final boolean kElevatorSensorInverted = false;// TODO:
     public static final int kElevatorCurrentLimit = 40;
 
@@ -138,7 +141,7 @@ public class Const {
     public static final boolean kIntakeAngleMotorSensorInverted = false;
     public static final int kIntakeCurrentLimit = 40;
 
-    public static final double kIntakeGearRatio = 1;
+    public static final double kIntakeGearRatio = 32.0 / 84;
 
     public static final Value kIntakeEngagePistonPos = Value.kForward;
     public static final Value kIntakeNOTEngagePistonPos = Value.kReverse;

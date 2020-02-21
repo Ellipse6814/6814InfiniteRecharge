@@ -46,8 +46,10 @@ public class ElevatorMotor extends SubsystemBase implements Debugable {
         safe = false;
 
         masterMotor = TalonHelper.createTalon(Const.kElevatorMotorPort, Const.kElevatorInverted);
-        slaveMotor1 = TalonHelper.createSlaveTalon(Const.kElevatorMotorSlavePort1, masterMotor);
-        slaveMotor2 = TalonHelper.createSlaveTalon(Const.kElevatorMotorSlavePort2, masterMotor);
+        slaveMotor1 = TalonHelper.createSlaveTalon(Const.kElevatorMotorSlavePort1, masterMotor,
+                Const.kElevatorSlave1Inverted);
+        slaveMotor2 = TalonHelper.createSlaveTalon(Const.kElevatorMotorSlavePort2, masterMotor,
+                Const.kElevatorSlave2Inverted);
 
         TalonHelper.configMagEncoder(masterMotor, Const.kElevatorSensorInverted);
 

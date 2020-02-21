@@ -24,7 +24,6 @@ public class ElevatorBrake extends SubsystemBase implements Debugable {
     }
 
     private final DoubleSolenoid piston;
-    public final DigitalInput releaseLimitSwitch = new DigitalInput(Const.kIntakeLimitSwitchPort);
 
     private boolean pistonState;
     private double pistonStateValidAfter;
@@ -50,16 +49,6 @@ public class ElevatorBrake extends SubsystemBase implements Debugable {
 
         pistonState = engage;
         pistonStateValidAfter = Timer.getFPGATimestamp() + Const.kElevatorPistonMoveDelay;
-    }
-
-    public boolean getReleaseLimitSwitch() {
-        return releaseLimitSwitch.get();
-    }
-
-    public void checkReleaseButton() {
-        if (getReleaseLimitSwitch()) {
-            engageBrake(false);
-        }
     }
 
     public void debug() {

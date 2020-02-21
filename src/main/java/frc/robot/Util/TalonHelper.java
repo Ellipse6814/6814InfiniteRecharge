@@ -41,6 +41,15 @@ public class TalonHelper {
         return talon;
     }
 
+    public static TalonSRX createSlaveTalon(int port, TalonSRX master, InvertType invertType) {
+        TalonSRX talon = new TalonSRX(port);
+        talon.configFactoryDefault(kCommTimeout);
+        talon.follow(master);
+        talon.setInverted(invertType);
+        log("A SLAVE TalonSRX is created on port [" + port + "], with inverted [" + master.getInverted() + "]");
+        return talon;
+    }
+
     public static VictorSPX createSlaveVictor(int port, TalonSRX master) {
         VictorSPX victor = new VictorSPX(port);
         victor.configFactoryDefault(kCommTimeout);
