@@ -1,8 +1,8 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
 import frc.robot.Util.Debugable;
@@ -52,5 +52,8 @@ public class ElevatorBrake extends SubsystemBase implements Debugable {
     }
 
     public void debug() {
+        SmartDashboard.putBoolean("ElevatorBrake:getPiston()", getPiston());
+        SmartDashboard.putBoolean("ElevatorBrake:pistonState", pistonState);
+        SmartDashboard.putNumber("ElevatorBrake:pistonStateValidAfter", pistonStateValidAfter);
     }
 }

@@ -32,7 +32,6 @@ public class ElevatorMotor extends SubsystemBase implements Debugable {
         return instance;
     }
 
-    private final int pidIdx = 0;
     public final TalonSRX masterMotor, slaveMotor1, slaveMotor2;
     public final DigitalInput resetLimitSwitch = new DigitalInput(Const.kIntakeLimitSwitchPort);
 
@@ -53,7 +52,8 @@ public class ElevatorMotor extends SubsystemBase implements Debugable {
 
         TalonHelper.configMagEncoder(masterMotor, Const.kElevatorSensorInverted);
 
-        TalonHelper.configPID(masterMotor, pidIdx, Const.kElevatorkP, Const.kElevatorkI, Const.kElevatorkD, 0, 0);
+        TalonHelper.configPID(masterMotor, Const.kElevatorPIDIdx, Const.kElevatorkP, Const.kElevatorkI,
+                Const.kElevatorkD, 0, 0);
         TalonHelper.configMotionMagic(masterMotor, Const.kElevatorMaxVel, Const.kElevatorMaxAcc);
 
         TalonHelper.configNeutralMode(Arrays.asList(masterMotor, slaveMotor1, slaveMotor2), NeutralMode.Brake);
@@ -94,7 +94,7 @@ public class ElevatorMotor extends SubsystemBase implements Debugable {
 
     public void resetEncoder(double resetToDeg) {
         int intVal = (int) (resetToDeg * Const.kDeg2Rot * Const.kRot2TalonRaw);
-        TalonHelper.resetEncoder(masterMotor, pidIdx, intVal);
+        TalonHelper.resetEncoder(masterMotor, Const.kElevatorPIDIdx, intVal);
         updateSafety();
     }
 
@@ -128,7 +128,10 @@ public class ElevatorMotor extends SubsystemBase implements Debugable {
     }
 
     public void debug() {
-        SmartDashboard.putNumber("Setpoint",
-                masterMotor.getClosedLoopTarget() * Const.kDeg2Rot * Const.kElevatorGearRatio * Const.kRot2TalonRaw);
+        SmartDashboard.putNumber("ElevatorMotor:positionState", positionState);
+        SmartDashboard.putBoolean("ElevatorMotor:safe", safe);
+        SmartDashboard.putNumber("ElevatorMotor:getEncoderPosition()", getEncoderPosition());
+        SmartDashboard.putNumber("ElevatorMotor:getEncoderVelocity()", getEncoderVelocity());
+        SmartDashboard.putBoolean("ElevatorMotor:onTarget()", onTarget());
     }
 }

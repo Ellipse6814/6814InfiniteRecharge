@@ -7,7 +7,6 @@ import java.util.Date;
 
 import edu.wpi.first.wpilibj.Timer;
 
-
 public class Logger {
     private static Logger instance;
 
@@ -18,6 +17,7 @@ public class Logger {
     }
 
     private PrintWriter writer = null;
+    public boolean debug = true;
 
     public static void main(String[] args) {
         Logger l = new Logger();
@@ -46,6 +46,8 @@ public class Logger {
 
     public void log(Object message) {
         writer.print(message + "\n");
+        if (debug)
+            System.out.println(message);
     }
 
     public void log(String title, Object msg) {

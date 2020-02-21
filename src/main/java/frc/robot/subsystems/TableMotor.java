@@ -29,7 +29,6 @@ public class TableMotor extends SubsystemBase implements Debugable {
         return instance;
     }
 
-    private final int pidIdx = 0;
     public final TalonSRX motor = new TalonSRX(Const.kTableMotorPort);
     private final TableColorDetector tableColorDetector = TableColorDetector.getInstance();
     private SimpleMotorFeedforward simpleMotorFeedforward = new SimpleMotorFeedforward(Const.kTablekS, Const.kTablekV,
@@ -44,12 +43,12 @@ public class TableMotor extends SubsystemBase implements Debugable {
         motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
         motor.setSelectedSensorPosition(0);
         motor.setSensorPhase(true);
-        motor.selectProfileSlot(pidIdx, pidIdx);
-        motor.config_kF(pidIdx, 0., Const.kCANTimeout);
-        motor.config_kP(pidIdx, 0.25, Const.kCANTimeout);
-        motor.config_kI(pidIdx, 0.01, Const.kCANTimeout);
-        motor.config_kD(pidIdx, 0.0, Const.kCANTimeout);
-        motor.config_IntegralZone(pidIdx, 500);
+        motor.selectProfileSlot(Const.kTablePIDIdx, Const.kTablePIDIdx);
+        motor.config_kF(Const.kTablePIDIdx, 0., Const.kCANTimeout);
+        motor.config_kP(Const.kTablePIDIdx, 0.25, Const.kCANTimeout);
+        motor.config_kI(Const.kTablePIDIdx, 0.01, Const.kCANTimeout);
+        motor.config_kD(Const.kTablePIDIdx, 0.0, Const.kCANTimeout);
+        motor.config_IntegralZone(Const.kTablePIDIdx, 500);
         motor.configMotionCruiseVelocity(
                 (int) (0.75 * Const.kTableRot2RollerRot * Const.kSec2Talon100Ms * Const.kRot2TalonRaw));
         motor.configMotionAcceleration(2000);
@@ -105,9 +104,9 @@ public class TableMotor extends SubsystemBase implements Debugable {
 
     public void resetEncoder(double resetToDeg) {
         int intVal = (int) (resetToDeg * Const.kDeg2Rot * Const.kRot2TalonRaw);
-        TalonHelper.resetEncoder(motor, pidIdx, intVal);
+        TalonHelper.resetEncoder(motor, Const.kTablePIDIdx, intVal);
         // log("Should reset encoder to: " + intVal);
-        // motor.setSelectedSensorPosition(intVal, pidIdx, 30);
+        // motor.setSelectedSensorPosition(intVal, Const.kTablePIDIdx, 30);
         // log(errorVal.toString());
         // log("Encoder actually reset to: " +
         // motor.getSelectedSensorPosition());
@@ -131,15 +130,22 @@ public class TableMotor extends SubsystemBase implements Debugable {
         return false;
     }
 
-    public void debug() {
-        SmartDashboard.putNumber("Setpoint", motor.getClosedLoopTarget() * Const.kDeg2Rot * Const.kRot2TalonRaw);
-    }
-
     private int getSign(double a) {
         if (a > 0)
             return 1;
         if (a < 0)
             return -1;
         return 0;
+    }
+
+    public void debug() {
+        SmartDashboard.putString("TableMotor:peekColor()", peekColor().toString());
+        SmartDashboard.putNumber("TableMotor:getEncoderPosition()", getEncoderPosition());
+        SmartDashboard.putNumber("TableMotor:getEncoderVelocity()", getEncoderVelocity());
+        SmartDashboard.putBoolean("TableMotor:onTarget()", onTarget());
+        SmartDashboard.putNumber("TableMotor:direction", direction);
+        SmartDashboard.putNumber("TableMotor:degs", degs);
+        SmartDashboard.putNumber("TableMotor:prevStableEncoderVal", prevStableEncoderVal);
+
     }
 }

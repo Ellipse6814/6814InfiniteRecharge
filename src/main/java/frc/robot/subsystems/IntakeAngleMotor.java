@@ -30,7 +30,6 @@ public class IntakeAngleMotor extends SubsystemBase implements Debugable {
         return instance;
     }
 
-    private final int pidIdx = 0;
     public final TalonSRX motor;
     public final DigitalInput resetLimitSwitch = new DigitalInput(Const.kIntakeLimitSwitchPort);
 
@@ -49,7 +48,7 @@ public class IntakeAngleMotor extends SubsystemBase implements Debugable {
 
         TalonHelper.configMagEncoder(motor, Const.kIntakeAngleMotorSensorInverted);
 
-        TalonHelper.configPID(motor, pidIdx, Const.kIntakekP, Const.kIntakekI, Const.kIntakekD, 0, 0);
+        TalonHelper.configPID(motor, Const.kIntakePIDIdx, Const.kIntakekP, Const.kIntakekI, Const.kIntakekD, 0, 0);
         TalonHelper.configMotionMagic(motor, Const.kIntakeMaxVel, Const.kIntakeMaxAcc);
 
         TalonHelper.configNeutralMode(motor, NeutralMode.Brake);
@@ -87,7 +86,7 @@ public class IntakeAngleMotor extends SubsystemBase implements Debugable {
 
     public void resetEncoder(double resetToDeg) {
         int intVal = (int) (resetToDeg * Const.kDeg2Rot * Const.kRot2TalonRaw);
-        TalonHelper.resetEncoder(motor, pidIdx, intVal);
+        TalonHelper.resetEncoder(motor, Const.kIntakePIDIdx, intVal);
     }
 
     private void updateSafety() {
@@ -129,7 +128,11 @@ public class IntakeAngleMotor extends SubsystemBase implements Debugable {
     }
 
     public void debug() {
-        SmartDashboard.putNumber("Setpoint",
-                motor.getClosedLoopTarget() * Const.kDeg2Rot * Const.kIntakeGearRatio * Const.kRot2TalonRaw);
+        SmartDashboard.putNumber("IntakeAngleMotor:angleState", angleState);
+        SmartDashboard.putBoolean("IntakeAngleMotor:safe", safe);
+        SmartDashboard.putNumber("IntakeAngleMotor:getEncoderPosition()", getEncoderPosition());
+        SmartDashboard.putNumber("IntakeAngleMotor:getEncoderVelocity()", getEncoderVelocity());
+        SmartDashboard.putBoolean("IntakeAngleMotor:onTarget()", onTarget());
+        SmartDashboard.putBoolean("IntakeAngleMotor:getResetLimitSwitch()", getResetLimitSwitch());
     }
 }

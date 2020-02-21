@@ -6,6 +6,7 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
 import frc.robot.Util.Debugable;
@@ -65,8 +66,8 @@ public class Drive extends SubsystemBase implements Debugable {
         leftEncoder = leftMaster.getAlternateEncoder(AlternateEncoderType.kQuadrature, 4096);
         rightEncoder = rightMaster.getAlternateEncoder(AlternateEncoderType.kQuadrature, 4096);
 
-        leftEncoder.setInverted(Const.kLeftDriveInverted);
-        rightEncoder.setInverted(Const.kRightDriveInverted);
+        leftEncoder.setInverted(Const.kLeftDriveSensorInverted);
+        rightEncoder.setInverted(Const.kRightDriveSensorInverted);
 
         leftPID = leftMaster.getPIDController();
         rightPID = rightMaster.getPIDController();
@@ -117,6 +118,6 @@ public class Drive extends SubsystemBase implements Debugable {
     }
 
     public void debug() {
-
+        SmartDashboard.putNumber("Drive:gear", gear);
     }
 }

@@ -46,7 +46,7 @@ public class Const {
 
     public static final boolean kLeftDriveInverted = false;
     public static final boolean kRightDriveInverted = true;
-    public static final boolean kLeftDriveSensorInverted = false;// TODO:
+    public static final boolean kLeftDriveSensorInverted = false;
     public static final boolean kRightDriveSensorInverted = true;
 
     public static final double[] kDrivePowerGears = { 0.3333, 0.6666, 1 };
@@ -82,6 +82,7 @@ public class Const {
     public static final int kTableRotationSlices = 10;
     public static final double kDeltaDegreesOnRoller = Const.kTableSliceRollerDeg;
 
+    public static final int kTablePIDIdx = 0;
     public static final double kTableMaxVel = 0;
     public static final double kTableMaxAcc = 0;
     public static final double kTablekP = 0;
@@ -122,6 +123,7 @@ public class Const {
     public static final double kElevatorBottomPos = 0; // TODO:
     public static final double kElevatorTopPos = 1;
 
+    public static final int kElevatorPIDIdx = 0;
     public static final double kElevatorMaxVel = 0;
     public static final double kElevatorMaxAcc = 0;
     public static final double kElevatorkP = 0;
@@ -161,6 +163,7 @@ public class Const {
     public static final double kIntakeInSpd = -1;
     public static final double kIntakeOutSpd = 1;
 
+    public static final int kIntakePIDIdx = 0;
     public static final double kIntakeMaxVel = 0;
     public static final double kIntakeMaxAcc = 0;
     public static final double kIntakekP = 0;

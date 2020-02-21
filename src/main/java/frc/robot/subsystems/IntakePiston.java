@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Const;
 import frc.robot.Util.Debugable;
@@ -55,6 +56,8 @@ public class IntakePiston extends SubsystemBase implements Debugable {
     }
 
     public void debug() {
-
+        SmartDashboard.putBoolean("IntakePiston:getPiston()", getPiston());
+        SmartDashboard.putBoolean("IntakePiston:pistonState", pistonState);
+        SmartDashboard.putNumber("IntakePiston:pistonStateValidAfter", pistonStateValidAfter);
     }
 }
