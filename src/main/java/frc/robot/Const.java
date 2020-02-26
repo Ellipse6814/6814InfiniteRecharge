@@ -93,8 +93,8 @@ public class Const {
     public static final double kTablekA = 0;
 
     // _elevator
-    public static final int kElevatorSolonoidPort1 = -2;
-    public static final int kElevatorSolonoidPort2 = -3;
+    public static final int kElevatorSolonoidPort1 = 4;
+    public static final int kElevatorSolonoidPort2 = 5;
     public static final int kElevatorMotorPort = 3;
     public static final int kElevatorMotorSlavePort1 = 5;
     public static final int kElevatorMotorSlavePort2 = 6;
@@ -138,6 +138,8 @@ public class Const {
     public static final int kIntakeRollerMotorPort = -1;
     public static final int kIntakeAngleMotorPort = -1;
     public static final int kIntakeLimitSwitchPort = -1;
+    public static final int kIntakeSolonoidPort1 = 2;
+    public static final int kIntakeSolonoidPort2 = 3;
 
     public static final boolean kIntakeAngleMotorInverted = false;
     public static final boolean kIntakeAngleMotorSensorInverted = false;

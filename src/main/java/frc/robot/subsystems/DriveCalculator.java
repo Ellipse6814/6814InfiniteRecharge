@@ -27,8 +27,8 @@ public class DriveCalculator {
         power = applyPowerGear(power, gear);
         turn = applyTurnGear(turn, gear);
 
-        double right = power + turn;
-        double left = power - turn;
+        double left = power + turn;
+        double right = power - turn;
 
         return new double[] { left, right };
     }
@@ -60,6 +60,6 @@ public class DriveCalculator {
     }
 
     private double applyTurnGear(double speed, int gear) {
-        return speed * Const.kDriveTurnGears[gear - 1];
+        return speed * Const.kDriveTurnGears[gear];
     }
 }

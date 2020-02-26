@@ -30,7 +30,7 @@ public class IntakePiston extends SubsystemBase implements Debugable {
 
     private IntakePiston() {
         TableCalculator.getInstance();
-        piston = new DoubleSolenoid(Const.kTableSolonoidPort1, Const.kTableSolonoidPort2);
+        piston = new DoubleSolenoid(Const.kIntakeSolonoidPort1, Const.kIntakeSolonoidPort2);
 
         pistonState = piston.get().equals(Const.kIntakeEngagePistonPos);
         pistonStateValidAfter = Timer.getFPGATimestamp();
