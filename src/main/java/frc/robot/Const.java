@@ -126,13 +126,13 @@ public class Const {
     public static final int kElevatorPIDIdx = 0;
     public static final double kElevatorMaxVel = 0;
     public static final double kElevatorMaxAcc = 0;
-    public static final double kElevatorkP = 0;
+    public static final double kElevatorkP = 0.0106;
     public static final double kElevatorkI = 0;
-    public static final double kElevatorkD = 0;
-    public static final double kElevatorkS = 0;
-    public static final double kElevatorkV = 0;
-    public static final double kElevatorkA = 0;
-    public static final double kElevatorkG = 0;
+    public static final double kElevatorkD = 0.00737;
+    public static final double kElevatorkS = 0.336;
+    public static final double kElevatorkV = 23.5;
+    public static final double kElevatorkA = 0.635;
+    public static final double kElevatorkG = 0.227;
 
     // _intake
     public static final int kIntakeRollerMotorPort = -1;

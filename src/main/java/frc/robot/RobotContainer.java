@@ -131,4 +131,17 @@ public class RobotContainer {
         elevatorBrake.debug();
         led.debug();
     }
+
+    public void disabledInit() {
+        led.require(LED.LEDState.Yellow);
+        logger.flush();
+    }
+
+    public void disabledPeriodic() {
+        intakeAngleMotor.tryToLimitSwitchReset();
+    }
+
+    public void enabledInit() {
+        led.clearRequire(LED.LEDState.Yellow);
+    }
 }
